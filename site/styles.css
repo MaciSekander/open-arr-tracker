@@ -140,3 +140,10 @@ code { font-size: .92em; }
 .cmp b { text-align: right; font-variant-numeric: tabular-nums; }
 .cmp-track { height: 10px; }
 .cmp-track > div { height: 100%; border-radius: 0 5px 5px 0; min-width: 2px; }
+
+.eq { display: flex; align-items: center; gap: 14px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--grid); }
+.eq > div { display: flex; flex-direction: column; }
+.eq b { font-size: 24px; font-weight: 650; letter-spacing: -.02em; line-height: 1.1; }
+.eq span { font-size: 12.5px; color: var(--ink-2); }
+.eq i { font-style: normal; font-size: 20px; color: var(--muted); }
+.cmp-sub { font-size: 12.5px; color: var(--muted); margin: -6px 0 12px; }

@@ -290,6 +290,84 @@ class Model:
         return out
 
 
+def build_tokens(v):
+    """Token economics in Ramp's sample: spend = tokens x price, by lab, token type and model."""
+    daily, weekly = read(v / 'ramp_token_daily_7d.csv'), read(v / 'ramp_token_weekly_models.csv')
+    if not daily or not weekly:
+        return None
+    out = {}
+    for company in COMPANIES:
+        mk = company.lower()
+        by = {}  # date -> type -> (tokens, cost), each a trailing 7-day total
+        for r in daily:
+            if r['model_maker'] == mk:
+                by.setdefault(D(r['usage_date']), {})[r['token_type']] = (float(r['token_count_7d']), float(r['token_cost_usd_7d']))
+
+        def four_weeks(day):
+            """Sum four disjoint weeks ending on `day`; None unless all are present with every token type."""
+            days = [day - dt.timedelta(days=7 * i) for i in range(4)]
+            if not all(d in by and len(by[d]) == 3 for d in days):
+                return None
+            tot = {t: (sum(by[d][t][0] for d in days), sum(by[d][t][1] for d in days)) for t in ['all_tokens', 'output', 'uncached_input']}
+            a = tot['all_tokens']
+            tot['cached'] = (a[0] - tot['output'][0] - tot['uncached_input'][0], a[1] - tot['output'][1] - tot['uncached_input'][1])
+            return tot
+
+        usable = [(d, four_weeks(d)) for d in sorted(by)]
+        usable = [(d, t) for d, t in usable if t]
+        price = lambda t, k='all_tokens': t[k][1] / t[k][0] * 1e6
+        (d0, first), (d1, last) = usable[0], usable[-1]
+        names = {'output': 'Output', 'uncached_input': 'Fresh input', 'cached': 'Cached input and other'}
+        types = [{'type': names[k], 'token_share': last[k][0] / last['all_tokens'][0], 'spend_share': last[k][1] / last['all_tokens'][1], 'price': price(last, k)} for k in names]
+
+        ends = sorted({r['period_end'] for r in weekly if r['model_maker'] == mk})
+
+        def models(period_ends):
+            agg = {}
+            for r in weekly:
+                if r['model_maker'] == mk and r['period_end'] in period_ends:
+                    m = agg.setdefault(r['series_label'], {'token_spend': 0.0, 'token_volume': 0.0})
+                    m[r['metric_key']] += float(r['metric_value'])
+            return {k: m for k, m in agg.items() if m['token_volume'] > 0 and m['token_spend'] > 0}
+
+        now, then = models(set(ends[-4:])), models(set(ends[-17:-13]))
+        spend, vol = sum(m['token_spend'] for m in now.values()), sum(m['token_volume'] for m in now.values())
+        top = sorted(now.items(), key=lambda kv: -kv[1]['token_spend'])
+        mix = [{'model': k, 'spend_share': m['token_spend'] / spend, 'token_share': m['token_volume'] / vol, 'price': m['token_spend'] / m['token_volume'] * 1e6} for k, m in top[:6]]
+        rest = top[6:]
+        if rest:
+            rs, rv = sum(m['token_spend'] for _, m in rest), sum(m['token_volume'] for _, m in rest)
+            mix.append({'model': f'{len(rest)} other models', 'spend_share': rs / spend, 'token_share': rv / vol, 'price': rs / rv * 1e6})
+
+        # Why the average price moved over about a quarter: the same models repriced, or usage shifted between models.
+        # A model present in only one period keeps its own price in both, so all of its effect counts as a shift.
+        vt, vn = sum(m['token_volume'] for m in then.values()), sum(m['token_volume'] for m in now.values())
+        within = shift = 0.0
+        for k in set(then) | set(now):
+            a, b = then.get(k), now.get(k)
+            pa = (a or b)['token_spend'] / (a or b)['token_volume'] * 1e6
+            pb = (b or a)['token_spend'] / (b or a)['token_volume'] * 1e6
+            wa, wb = (a['token_volume'] / vt if a else 0), (b['token_volume'] / vn if b else 0)
+            within += (wa + wb) / 2 * (pb - pa)
+            shift += (pa + pb) / 2 * (wb - wa)
+        p_then = sum(m['token_spend'] for m in then.values()) / vt * 1e6
+        p_now = sum(m['token_spend'] for m in now.values()) / vn * 1e6
+        assert abs((p_now - p_then) - (within + shift)) < 1e-6, 'price decomposition must add up'
+
+        out[company] = {
+            'from': str(d0), 'to': str(d1),
+            'tokens_week': {'then': first['all_tokens'][0] / 4, 'now': last['all_tokens'][0] / 4},
+            'spend_week': {'then': first['all_tokens'][1] / 4, 'now': last['all_tokens'][1] / 4},
+            'price': {'then': price(first), 'now': price(last)},
+            'price_series': [[str(d), round(price(t), 4)] for d, t in usable],
+            'cached_series': [[str(d), round(100 * t['cached'][0] / t['all_tokens'][0], 2)] for d, t in usable],
+            'types': types, 'models': mix, 'models_period': [ends[-4], ends[-1]],
+            'why': {'from': then and ends[-14], 'to': ends[-1], 'price_then': p_then, 'price_now': p_now, 'within': within, 'shift': shift,
+                    'models_then': len(then), 'models_now': len(now), 'new_models': len(set(now) - set(then))},
+        }
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--vintage', help='default: newest data/vintage_* folder')
@@ -325,7 +403,7 @@ def main():
         'snapshots': read(v / 'snapshots.csv'),
         'published': {k: x for k, x in json.loads((ROOT / 'registry' / 'published.json').read_text()).items() if not k.startswith('_')},
         'model': {'reviewed': model['reviewed'], 'window_days': model['window_days'], 'min_signals': model['min_signals'], 'segments': model['segments'], 'companies': companies},
-        'per_signal': m.per_signal(), 'sources': reg['sources']['sources'],
+        'per_signal': m.per_signal(), 'sources': reg['sources']['sources'], 'tokens': build_tokens(v),
     }
 
     out = ROOT / 'site' / 'data'
@@ -348,6 +426,7 @@ def main():
         'methods': [(q['method'], q['n'], round(q['mape'], 1), round(q['bias_pct'], 1)) for q in x['fit']['methods']],
         'pairs': [(p['to'], round(p['signal_ratio'], 2), round(p['actual_b'] / p['prev_b'], 2), p['model_b'] and round(p['model_b'], 1)) for p in x['fit']['pairs']],
         'outlook': {k: round(v, 1) for k, v in x['outlook'].items() if isinstance(v, float)}, 'curve_n': len(x['curve'])} for c, x in companies.items()},
+        'tokens': {c: {k: t[k] for k in ['from', 'to', 'tokens_week', 'spend_week', 'price', 'types', 'why']} | {'models': [(x['model'], round(100 * x['spend_share']), round(x['price'], 2)) for x in t['models']]} for c, t in (site['tokens'] or {}).items()},
         'per_signal': [(p['company'], p['signal'], p['n'], round(p['mape'], 1), round(p['bias_pct'], 1)) for p in site['per_signal']]}, indent=1))
 
 
