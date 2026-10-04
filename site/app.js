@@ -146,6 +146,59 @@ function signals() {
   }
 }
 
+/* ---------- Tokens ---------- */
+function tokens() {
+  const T = D.tokens, x = (a, b) => `×${(b / a).toFixed(b / a >= 10 ? 0 : 1)}`, usdM = v => `$${v.toFixed(2)}`, share = v => pct(v * 100, v < 0.1 ? 1 : 0);
+  const big = v => v >= 1e12 ? `${(v / 1e12).toFixed(1)}T` : `${(v / 1e9).toFixed(0)}B`;
+  const cards = D.meta.companies.map(co => { const t = T[co], dp = t.price.now / t.price.then - 1; return `<div class="card">
+      <div class="co-head">${sw(co)}${co}</div>
+      <div class="tile"><div class="label">Average price per million tokens</div><div class="value hero">${usdM(t.price.now)}</div>
+        <div class="sub">${Math.abs(dp) < 0.03 ? 'About the same as' : `${pct(Math.abs(dp) * 100, 0)} ${dp < 0 ? 'lower' : 'higher'} than`} ${usdM(t.price.then)} in ${new Date(t.from).toLocaleString('en', { month: 'long', year: 'numeric', timeZone: 'UTC' })}</div></div>
+      <div class="eq"><div><b>${x(t.tokens_week.then, t.tokens_week.now)}</b><span>tokens</span></div><i>×</i><div><b>${x(t.price.then, t.price.now)}</b><span>price</span></div><i>=</i><div><b>${x(t.spend_week.then, t.spend_week.now)}</b><span>spend</span></div></div>
+      <p class="note">${big(t.tokens_week.now)} tokens and $${(t.spend_week.now / 1e6).toFixed(1)}M a week in this sample, four-week average to ${fmtDate(ms(t.to))}.</p></div>`; }).join('');
+  const types = D.meta.companies.map(co => `<div class="card"><div class="co-head">${sw(co)}${co}</div><div class="tablewrap"><table>
+      <thead><tr><th>Token type</th><th class="num">Share of tokens</th><th class="num">Share of spend</th><th class="num">Price per million</th></tr></thead>
+      <tbody>${T[co].types.map(r => `<tr><td>${esc(r.type)}</td><td class="num">${share(r.token_share)}</td><td class="num">${share(r.spend_share)}</td><td class="num">${usdM(r.price)}</td></tr>`).join('')}</tbody></table></div></div>`).join('');
+  const models = D.meta.companies.map(co => `<div class="card"><div class="co-head">${sw(co)}${co}</div>
+      ${T[co].models.map(r => `<div class="cmp"><span>${esc(r.model)}</span><div class="cmp-track"><div style="width:${r.spend_share / T[co].models[0].spend_share * 100}%;background:${r.model.includes('other models') ? 'var(--axis)' : COLOR[co]}"></div></div><b>${share(r.spend_share)}</b></div>
+        <div class="cmp-sub">${share(r.token_share)} of tokens · ${usdM(r.price)} per million</div>`).join('')}</div>`).join('');
+  const why = D.meta.companies.map(co => { const w = T[co].why, d = w.price_now - w.price_then; return `<tr><td>${sw(co)} ${co}</td><td class="num">${usdM(w.price_then)}</td><td class="num">${usdM(w.price_now)}</td><td class="num">${signed(d, usdM)}</td><td class="num">${signed(w.within, usdM)}</td><td class="num">${signed(w.shift, usdM)}</td><td class="num">${w.new_models} of ${w.models_now}</td></tr>`; }).join('');
+  const a = T.Anthropic, o = T.OpenAI, cached = t => t.types.find(r => r.type.startsWith('Cached'));
+
+  main.replaceChildren($(`
+    <h1>Token economics</h1>
+    <p class="lede">Usage revenue is tokens multiplied by price. Ramp's sample of business customers shows both sides for each lab, so growth in spend can be separated into more tokens and a changing price.</p>
+    <div class="grid2">${cards}</div>
+    <p class="note">Change since ${fmtDate(ms(a.from))}. All figures on this page are Ramp's sample of its own business customers, not company totals. Prices are what was billed, so they include caching and discounts.</p>
+    <h2>In short</h2>
+    <ul class="plain">
+      <li><strong>Anthropic:</strong> customers in the sample use ${x(a.tokens_week.then, a.tokens_week.now).slice(1)} times the tokens they did in December, but the average price per token fell ${pct((1 - a.price.now / a.price.then) * 100, 0)}, so spend grew ${x(a.spend_week.then, a.spend_week.now).slice(1)} times.</li>
+      <li><strong>OpenAI:</strong> tokens grew ${x(o.tokens_week.then, o.tokens_week.now).slice(1)} times and the average price ended about where it started, so spend grew in step.</li>
+      <li><strong>Caching dominates volume:</strong> ${share(cached(a).token_share)} of Anthropic's tokens and ${share(cached(o).token_share)} of OpenAI's are neither output nor fresh input, which is mostly cached input billed at a fraction of the fresh price. Token counts alone overstate how much work is being paid for.</li>
+    </ul>
+    <h2>Price per million tokens</h2>
+    <div class="card"><div class="chart-sub">USD billed per million tokens, all token types, four-week average</div>
+      ${legend(D.meta.companies.map(co => [co, COLOR[co]]))}<div id="c-price"></div></div>
+    <h2>What kind of tokens</h2>
+    <p>Output tokens are a sliver of volume but carry a large share of spend. Four weeks to ${fmtDate(ms(a.to))}.</p>
+    <div class="grid2">${types}</div>
+    <div class="card" style="margin-top:20px"><h3>Share of tokens that are cached input</h3><div class="chart-sub">% of all tokens, four-week average</div>
+      ${legend(D.meta.companies.map(co => [co, COLOR[co]]))}<div id="c-cached"></div>
+      <p class="note">Computed as all tokens minus output and fresh input, so it also includes any token type Ramp does not list separately.</p></div>
+    <h2>Which models earn the spend</h2>
+    <p>Share of each lab's spend in the sample, four weeks to ${fmtDate(ms(a.models_period[1]))}.</p>
+    <div class="grid2">${models}</div>
+    <h2>Why the average price moved</h2>
+    <p>Over the past quarter, split into two effects that add up exactly: the same models costing more or less per token, and usage shifting between models.</p>
+    <div class="card tablewrap"><table>
+      <thead><tr><th>Company</th><th class="num">A quarter ago</th><th class="num">Now</th><th class="num">Change</th><th class="num">Same models repriced</th><th class="num">Shift between models</th><th class="num">New models</th></tr></thead>
+      <tbody>${why}</tbody></table>
+      <p class="note">USD per million tokens. Compares the four weeks to ${fmtDate(ms(a.why.from))} with the four weeks to ${fmtDate(ms(a.why.to))}. A model's own billed price can rise without a list-price change, for example when less of its input is cached. A model seen in only one period counts entirely as a shift.</p></div>`));
+
+  for (const [id, key, fmt] of [['c-price', 'price_series', v => `$${v.toFixed(2)}`], ['c-cached', 'cached_series', v => `${Math.round(v)}%`]])
+    lineChart(document.getElementById(id), { height: 260, fmt, label: id, series: D.meta.companies.map(co => ({ label: co, color: COLOR[co], points: T[co][key].map(([d, v]) => ({ t: ms(d), v })) })) });
+}
+
 /* ---------- Model ---------- */
 const state = {};
 function reset(co) {
@@ -285,6 +338,7 @@ function about() {
       <li><strong>Collect signals.</strong> Raw responses are saved with URL, timestamp and hash, then reduced to the series under Signals.</li>
       <li><strong>Total.</strong> Latest report × (median signal growth since that report) ^ elasticity. Growth compares ${D.model.window_days}-day averages. Elasticity is fitted on Anthropic's consecutive reports. OpenAI has too few reports to fit its own, so its business piece borrows that elasticity and its consumer piece is held at the last reported level.</li>
       <li><strong>Split.</strong> Part 1 segments take the midpoint of bounds set by cited disclosures. Part 2 is the remainder.</li>
+      <li><strong>Token economics.</strong> From Ramp's sample: spend divided by tokens gives the billed price per million tokens, by lab, token type and model. The quarterly price change is split exactly into repricing of the same models and shifts between models.</li>
       <li><strong>Check.</strong> Every report is predicted from the previous one, out of sample, and all misses are published.</li>
     </ul>
     <h2>Known limits</h2>
@@ -314,7 +368,7 @@ python3 pipeline/serve.py 8000</pre>
     <p>Python standard library only; the site has no build step and no dependencies. To add a source, add an entry to <code>registry/sources.json</code> and a collector step in <code>pipeline/collect.py</code>. To add or correct a disclosure, edit <code>registry/anchors.json</code> with the exact wording and a link.</p>`));
 }
 
-const routes = { overview, signals, model, sources, about };
+const routes = { overview, signals, tokens, model, sources, about };
 function route() {
   const name = location.hash.slice(1) in routes ? location.hash.slice(1) : 'overview';
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === `#${name}`));

@@ -59,6 +59,8 @@ Requires Python 3.9+. `collect.py --only pypi` re-collects one source into an ex
 - OpenAI is modelled in two pieces because its mix shifted in 2026: business revenue moves with developer signals
   including Codex, consumer revenue is held at its last reported level. Typical miss 18% over two reports, against
   31% as one business. It still fell a third short of the September report, when consumer revenue also jumped.
+- Token economics (Ramp sample): since December, Anthropic tokens are up 8.0x and the billed price per token is down
+  40%, so spend is up 4.9x. OpenAI tokens are up 5.4x at a flat average price.
 - PyPI is collected but never measured across 24 August 2026, where both SDKs step down about 38%.
 
 ## Updating
