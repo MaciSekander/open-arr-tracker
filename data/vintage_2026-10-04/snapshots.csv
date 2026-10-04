@@ -1,0 +1,50 @@
+source,item,metric,value,period_start,period_end
+homebrew,codex,installs_30d,90995,2026-09-04,2026-10-04
+homebrew,claude-code,installs_30d,28980,2026-09-04,2026-10-04
+homebrew,claude-code@latest,installs_30d,19570,2026-09-04,2026-10-04
+homebrew,chatgpt,installs_30d,6916,2026-09-04,2026-10-04
+homebrew,claude,installs_30d,9016,2026-09-04,2026-10-04
+homebrew,codex,installs_90d,327857,2026-07-06,2026-10-04
+homebrew,claude-code,installs_90d,172502,2026-07-06,2026-10-04
+homebrew,claude-code@latest,installs_90d,39981,2026-07-06,2026-10-04
+homebrew,chatgpt,installs_90d,35961,2026-07-06,2026-10-04
+homebrew,claude,installs_90d,44144,2026-07-06,2026-10-04
+homebrew,codex,installs_365d,869440,2025-10-04,2026-10-04
+homebrew,claude-code,installs_365d,1145334,2025-10-04,2026-10-04
+homebrew,claude-code@latest,installs_365d,101523,2025-10-04,2026-10-04
+homebrew,chatgpt,installs_365d,85501,2025-10-04,2026-10-04
+homebrew,claude,installs_365d,213374,2025-10-04,2026-10-04
+open_vsx,openai/chatgpt,downloads_cumulative,12213086,,
+open_vsx,Anthropic/claude-code,downloads_cumulative,54990270,,
+github,openai/codex,stars_cumulative,127851,,
+github,anthropics/claude-code,stars_cumulative,149418,,
+github,openai/openai-python,stars_cumulative,31743,,
+github,anthropics/anthropic-sdk-python,stars_cumulative,3947,,
+apple_top_free,ChatGPT (us),rank_top100,3,,
+apple_top_free,Claude by Anthropic (us),rank_top100,18,,
+apple_top_free,ChatGPT (gb),rank_top100,4,,
+apple_top_free,Claude by Anthropic (gb),rank_top100,12,,
+apple_top_free,ChatGPT (de),rank_top100,4,,
+apple_top_free,Claude by Anthropic (de),rank_top100,3,,
+apple_top_free,ChatGPT (jp),rank_top100,3,,
+apple_top_free,Claude by Anthropic (jp),rank_top100,30,,
+apple_top_free,ChatGPT (in),rank_top100,2,,
+apple_top_free,Claude by Anthropic (in),rank_top100,42,,
+apple_top_free,ChatGPT (br),rank_top100,10,,
+apple_top_free,Claude by Anthropic (br),rank_top100,61,,
+apple_ratings,ChatGPT (us),ratings_cumulative,10957674,,
+apple_ratings,Claude by Anthropic (us),ratings_cumulative,273322,,
+apple_ratings,ChatGPT (gb),ratings_cumulative,1351960,,
+apple_ratings,Claude by Anthropic (gb),ratings_cumulative,31454,,
+apple_ratings,ChatGPT (de),ratings_cumulative,1720196,,
+apple_ratings,Claude by Anthropic (de),ratings_cumulative,29043,,
+apple_ratings,ChatGPT (jp),ratings_cumulative,2548672,,
+apple_ratings,Claude by Anthropic (jp),ratings_cumulative,41550,,
+apple_ratings,ChatGPT (in),ratings_cumulative,2044014,,
+apple_ratings,Claude by Anthropic (in),ratings_cumulative,24932,,
+apple_ratings,ChatGPT (br),ratings_cumulative,2853980,,
+apple_ratings,Claude by Anthropic (br),ratings_cumulative,27449,,
+openrouter,OpenAI models in the top 20,token_share_week_pct,10.6,,2026-10-03
+openrouter,Anthropic models in the top 20,token_share_week_pct,1.7,,2026-10-03
+openrouter,Codex app,tokens_week,4719681526839,,2026-10-03
+openrouter,Claude Code app,tokens_week,8059832780367,,2026-10-03

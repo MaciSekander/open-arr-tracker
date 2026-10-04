@@ -1,0 +1,14 @@
+{
+  "url": "https://pypistats.org/api/packages/anthropic/overall?mirrors=false",
+  "retrieved_at_utc": "2026-10-04T20:55:51.544338+00:00",
+  "status": 200,
+  "headers": {
+    "Content-Length": "12911",
+    "Content-Type": "application/json",
+    "Date": "Sun, 04 Oct 2026 20:55:51 GMT",
+    "Server": "gunicorn",
+    "Connection": "close"
+  },
+  "sha256_uncompressed_response": "606ce816d1dc9f0da6df8a830a2be3c7cf85664028d5833da1666f7dbace9650",
+  "bytes": 12911
+}

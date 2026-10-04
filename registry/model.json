@@ -1,0 +1,142 @@
+{
+ "_readme": "Model v3. No hand-set growth factors. (1) Total: each company's latest reported run rate, rolled forward by the median growth of its activity signals raised to an elasticity fitted on that company's own report history. (2) Part 1, publicly traceable revenue: subscriptions, advertising and direct API, sized by bounds taken from cited disclosures; the reference is the midpoint. evidence is 'filing' (company filing as reported), 'reports' (company statements and press) or 'none' (no disclosure; the default is a placeholder and is labelled). (3) Part 2: the residual, total minus Part 1. (4) Outlook: the run rate if growth stops, and if the company keeps adding the average dollars per month it added between its first and latest 2026 reports. No compounding. OpenAI is modelled in two pieces because its mix shifted during 2026: business revenue moves with developer signals; consumer revenue is held at its last reported level.",
+ "reviewed": "2026-10-04",
+ "window_days": 28,
+ "min_signals": 2,
+ "nowcast_signals": [
+  "npm_sdk",
+  "npm_aisdk",
+  "pypi_sdk",
+  "ramp_tokens",
+  "ramp_spend"
+ ],
+ "segments": [
+  {
+   "id": "consumer",
+   "name": "Subscriptions",
+   "part": "public"
+  },
+  {
+   "id": "advertising",
+   "name": "Advertising",
+   "part": "public"
+  },
+  {
+   "id": "direct_api",
+   "name": "Direct API",
+   "part": "public"
+  },
+  {
+   "id": "enterprise_cloud",
+   "name": "Enterprise contracts and cloud resale",
+   "part": "residual"
+  }
+ ],
+ "companies": {
+  "OpenAI": {
+   "consumer": {
+    "low": {
+     "b": 12
+    },
+    "high": {
+     "share": 0.48
+    },
+    "cites": [
+     "A14",
+     "A10",
+     "A22"
+    ],
+    "basis": "Floor: more than 50M consumer subscribers in February at the $20 list price is $12B a year. Ceiling: business was the majority of revenue by August and has more than doubled since July, so consumer plus advertising is under half.",
+    "evidence": "reports"
+   },
+   "advertising": {
+    "low": {
+     "b": 1.0
+    },
+    "high": {
+     "b": 1.5
+    },
+    "cites": [
+     "A11"
+    ],
+    "basis": "$1B run rate disclosed on 31 August. No later figure; the upper bound allows for a month of growth.",
+    "evidence": "reports"
+   },
+   "direct_api": {
+    "of_business": {
+     "low": 0.25,
+     "high": 0.75
+    },
+    "evidence": "none",
+    "cites": [],
+    "basis": "OpenAI has not disclosed how business revenue divides between direct API, enterprise seats and Azure resale. The default of half is a placeholder, not an estimate."
+   },
+   "residual": {
+    "name": "Enterprise seats and Azure resale",
+    "basis": "Total minus Part 1: the share of run rate from enterprise seats and Azure resale. Nothing public measures it.",
+    "label": "Enterprise seats and Azure resale",
+    "cites": []
+   },
+   "signals": [
+    "npm_sdk",
+    "npm_aisdk",
+    "pypi_sdk",
+    "ramp_tokens",
+    "ramp_spend",
+    "npm_coding"
+   ],
+   "two_piece": {
+    "business_share": {
+     "A15": 0.4,
+     "A09": 0.5,
+     "A20": 0.53
+    },
+    "cites": [
+     "A16",
+     "A10",
+     "A22"
+    ],
+    "basis": "Business share of revenue at each report: more than 40% in March, the majority by mid-August, and about 53% in late September after business revenue more than doubled while the total rose 70%. The business piece moves with developer signals, using the elasticity fitted on Anthropic, a business that is almost entirely usage-based. The consumer piece is held at its last reported level because no public signal tracks paid ChatGPT subscriptions."
+   }
+  },
+  "Anthropic": {
+   "consumer": {
+    "low": {
+     "share": 0.12
+    },
+    "high": {
+     "share": 0.17
+    },
+    "evidence": "filing",
+    "cites": [
+     "A21",
+     "A17"
+    ],
+    "basis": "Subscriptions were $789M of nearly $4.6B in 2025, or 17%. Usage revenue has grown faster in 2026, so the lower bound allows the share to have slipped to 12%."
+   },
+   "direct_api": {
+    "low": {
+     "share": 0.28
+    },
+    "high": {
+     "share": 0.41
+    },
+    "evidence": "filing",
+    "cites": [
+     "A21"
+    ],
+    "basis": "Whatever is neither subscriptions nor cloud resale. Cloud partners took 47% of sales in 2025 after rising every year; allowing 47% to 55% for 2026 leaves 28% to 41% billed directly."
+   },
+   "residual": {
+    "name": "Cloud resale through Amazon, Google and Microsoft",
+    "basis": "Total minus Part 1: the share of run rate sold through Amazon, Google and Microsoft. The prospectus puts Amazon and Google at 47% of 2025 sales; no public signal tracks spending inside those clouds.",
+    "label": "Through cloud partners",
+    "fee_rate": 0.16,
+    "cites": [
+     "A21"
+    ]
+   }
+  }
+ },
+ "outlook_target": "2026-12-31"
+}

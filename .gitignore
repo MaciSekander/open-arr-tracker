@@ -1,0 +1,5 @@
+__pycache__/
+.DS_Store
+.claude/
+# Raw third-party responses stay local; their URL, timestamp and hash (.meta.json) are published.
+data/*/raw/*.gz

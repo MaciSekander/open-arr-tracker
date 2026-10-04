@@ -1,0 +1,33 @@
+{
+  "url": "https://openrouter.ai/rankings",
+  "retrieved_at_utc": "2026-10-04T22:32:18.531699+00:00",
+  "status": 200,
+  "headers": {
+    "Date": "Sun, 04 Oct 2026 22:32:18 GMT",
+    "Content-Type": "text/html; charset=utf-8",
+    "Transfer-Encoding": "chunked",
+    "Connection": "close",
+    "Age": "15",
+    "Cache-Control": "public, max-age=0, must-revalidate",
+    "Referrer-Policy": "no-referrer, strict-origin-when-cross-origin",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://clerk.openrouter.ai https://*.protect.clerk.com https://*.client.protect.clerk.com https://challenges.cloudflare.com https://checkout.stripe.com https://connect-js.stripe.com https://js.stripe.com https://maps.googleapis.com https://www.googletagmanager.com https://*.googletagmanager.com 'wasm-unsafe-eval' https://unpkg.com https://esm.sh https://static.cloudflareinsights.com https://cdn.jsdelivr.net https://*.algolia.net https://*.algolianet.com https://app.buildwithfern.com https://prod.ferndocs.com https://cdn.segment.com https://jobs.ashbyhq.com https://*.posthog.com https://cdn.tldraw.com; connect-src 'self' blob: https://model-assets.openrouter.ai https://clerk.openrouter.ai https://*.protect.clerk.com https://*.client.protect.clerk.com https://*.protect.clerk.com:* https://clerk-telemetry.com https://checkout.stripe.com https://api.stripe.com https://m.stripe.com https://maps.googleapis.com *.google-analytics.com https://www.googletagmanager.com https://www.google.com https://*.analytics.google.com https://analytics.google.com https://*.google-analytics.com https://*.googletagmanager.com https://*.g.doubleclick.net https://fonts.googleapis.com https://raw.githubusercontent.com wss://www.walletlink.org/rpc https://static.cloudflareinsights.com https://esm.sh https://*.browser-intake-datadoghq.com https://browser-intake-us5-datadoghq.com https://rum.browser-intake-us5-datadoghq.com https://api-na2.hsforms.com https://*.algolia.net https://*.algolianet.com https://app.buildwithfern.com https://prod.ferndocs.com https://api.segment.io https://cdn.segment.com https://www.openrouter.ai https://openrouter.ai https://jobs.ashbyhq.com https://api.ashbyhq.com/ https://*.posthog.com https://cdn.tldraw.com https://wrapped.openrouter.ai https://storage.googleapis.com; frame-src 'self' https://model-assets.openrouter.ai https://*.protect.clerk.com https://*.client.protect.clerk.com https://challenges.cloudflare.com https://checkout.stripe.com https://connect-js.stripe.com https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://us5.datadoghq.com https://share-na2.hsforms.com https://www.youtube.com https://app.buildwithfern.com https://prod.ferndocs.com https://jobs.ashbyhq.com; img-src 'self' data: blob: https://*.github.io https://model-assets.openrouter.ai https://img.clerk.com https://*.stripe.com https://www.googletagmanager.com www.google.com https://*.google-analytics.com https://*.googletagmanager.com https://analytics.google.com https://*.analytics.google.com https://*.g.doubleclick.net https://source.unsplash.com https://t0.gstatic.com https://imagedelivery.net https://raw.githubusercontent.com https://*.algolia.io https://files.buildwithfern.com https://icons.ferndocs.com https://cdn.tldraw.com https://wrapped.openrouter.ai; media-src 'self' data: blob: https://model-assets.openrouter.ai https://vgi-bench-mirror.openrouter.ai; worker-src 'self' blob: data:; style-src 'self' 'unsafe-inline' sha256-0hAheEzaMe6uXIKV4EehS9pu1am1lj/KnnzrOYqckXk= https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net https://app.buildwithfern.com https://prod.ferndocs.com https://jobs.ashbyhq.com https://*.posthog.com https://cdn.tldraw.com; frame-ancestors 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdn.tldraw.com; upgrade-insecure-requests",
+    "Permissions-Policy": "payment=(self \"https://checkout.stripe.com\" \"https://connect-js.stripe.com\" \"https://js.stripe.com\" \"https://*.js.stripe.com\" \"https://hooks.stripe.com\")",
+    "Server": "cloudflare",
+    "X-Content-Type-Options": "nosniff",
+    "Strict-Transport-Security": "max-age=63072000",
+    "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Matched-Path": "/en-US/rankings",
+    "X-Nextjs-Prerender": "1",
+    "X-Nextjs-Stale-Time": "300",
+    "X-Powered-By": "Next.js",
+    "X-Vercel-Cache": "HIT",
+    "X-Vercel-Id": "sfo1::sin1::l8f2g-1791153138269-93c59f9fa555",
+    "cf-cache-status": "DYNAMIC",
+    "Server-Timing": "cfCacheStatus;desc=\"DYNAMIC\"",
+    "CF-RAY": "a457a44a2dfa5ae1-SJC"
+  },
+  "sha256_uncompressed_response": "864118ca72f3bdf1b4424d9b1be3b92b7fa8f1be23dafd6fae72e60b55f1281e",
+  "bytes": 2426386
+}
