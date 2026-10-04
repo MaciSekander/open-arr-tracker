@@ -1,0 +1,25 @@
+{
+  "url": "https://tranco-list.eu/download/N2PGW/1000000",
+  "retrieved_at_utc": "2026-10-04T22:15:59.026911+00:00",
+  "status": 200,
+  "headers": {
+    "Date": "Sun, 04 Oct 2026 22:15:53 GMT",
+    "Content-Type": "text/csv; charset=utf-8",
+    "Transfer-Encoding": "chunked",
+    "Connection": "close",
+    "Server": "cloudflare",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Content-Disposition": "Attachment;filename=tranco_N2PGW.csv",
+    "Cache-Control": "public, max-age=86400",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=qLouZlxW%2FMJ2rQjrh5PFGoGt9WxzSbhhR3XblEIKrtxKwd4AHrdtUQdPwIuEBfJO3aFU%2Fny36rp9fxsL7u1xXv7rjTw22GOU3EMZ7FANJ%2BB2gH86DZSFWEl%2BfAm0os8SXDipXc20S8liiUs%2BGw%3D%3D\"}]}",
+    "X-Frame-Options": "DENY",
+    "vary": "accept-encoding",
+    "last-modified": "Sun, 04 Oct 2026 22:15:53 GMT",
+    "cf-cache-status": "MISS",
+    "Server-Timing": "cfCacheStatus;desc=\"MISS\"",
+    "CF-RAY": "a4578c38a856306f-SJC",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "sha256_uncompressed_response": "5df88bf9072af7888ae67b6187e26b5519d56cd2d36de8317384ea6b6633f392",
+  "bytes": 22612806
+}

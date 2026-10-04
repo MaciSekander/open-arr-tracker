@@ -1,0 +1,238 @@
+{
+ "_readme": "Catalogue of public data sources. status 'live' means a collector exists and the newest vintage contains its data. 'planned' means identified but not collected: no numbers from it appear on the site. Snapshot sources have no public history; each collection adds one observation. informs lists the revenue segments a source can speak to.",
+ "sources": [
+  {
+   "id": "disclosures",
+   "name": "Company disclosures and press",
+   "status": "live",
+   "kind": "anchor",
+   "url": null,
+   "access": "Manual review, graded A to D",
+   "cadence": "Irregular",
+   "measures": "Stated run-rate totals, segment figures and customer counts",
+   "blind_spot": "Unaudited, rounded, thresholds rather than exact values; observation date often unclear",
+   "informs": [
+    "consumer",
+    "enterprise_cloud",
+    "direct_api",
+    "advertising"
+   ],
+   "signals": [
+    "anchors"
+   ]
+  },
+  {
+   "id": "npm",
+   "name": "npm registry downloads",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://github.com/npm/registry/blob/main/docs/download-counts.md",
+   "access": "Open API, no key",
+   "cadence": "Daily",
+   "measures": "Daily downloads of the official SDKs, the Vercel AI SDK provider packages and the coding CLIs",
+   "blind_spot": "Installs, CI and updates are not paid usage; native installers divert downloads; OpenAI-compatible SDK is used with other providers",
+   "informs": [
+    "direct_api"
+   ],
+   "signals": [
+    "npm_sdk",
+    "npm_aisdk",
+    "npm_coding"
+   ]
+  },
+  {
+   "id": "tranco",
+   "name": "Tranco domain ranking",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://tranco-list.eu/",
+   "access": "Open archive, permanent list IDs",
+   "cadence": "Daily lists; sampled month-end and weekly",
+   "measures": "Popularity rank of chatgpt.com, openai.com, claude.ai, anthropic.com",
+   "blind_spot": "Ordinal rank, not traffic; says nothing about paid conversion. Already blends Cloudflare Radar, Chrome UX, Majestic, Umbrella and Farsight rankings, so those are not separate sources",
+   "informs": [
+    "consumer",
+    "advertising"
+   ],
+   "signals": [
+    "tranco"
+   ]
+  },
+  {
+   "id": "ramp",
+   "name": "Ramp AI Index (public pages)",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://ramp.com/velocity/how-we-built-the-ramp-ai-index",
+   "access": "Published aggregates embedded in public pages; no private records",
+   "cadence": "Daily token series; monthly adoption",
+   "measures": "Share of Ramp businesses paying each vendor; token volume and billed token cost in Ramp's sample",
+   "blind_spot": "US-centric sample of Ramp customers; history is latest-vintage and can be revised; one payment is not a seat count",
+   "informs": [
+    "direct_api",
+    "enterprise_cloud"
+   ],
+   "signals": [
+    "ramp_spend",
+    "ramp_tokens",
+    "ramp_adoption"
+   ]
+  },
+  {
+   "id": "pypi",
+   "name": "PyPI downloads",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://pypistats.org/api/",
+   "access": "Open API, no key; about 180 days of history, rate limited",
+   "cadence": "Daily",
+   "measures": "Downloads of the openai and anthropic Python SDKs",
+   "blind_spot": "Same install-versus-usage gap as npm; mirrors and CI inflate counts",
+   "informs": [
+    "direct_api"
+   ],
+   "signals": [
+    "pypi_sdk"
+   ]
+  },
+  {
+   "id": "vscode",
+   "name": "Open VSX installs (snapshot)",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://open-vsx.org/",
+   "access": "Public install counters",
+   "cadence": "Daily snapshot (no public history; must be collected forward)",
+   "measures": "Cumulative downloads of the Claude Code and ChatGPT/Codex editor extensions on Open VSX",
+   "blind_spot": "Cumulative and one registry only; the Microsoft marketplace is not included. Not active paid seats",
+   "informs": [
+    "consumer",
+    "direct_api"
+   ],
+   "signals": [
+    "snapshots"
+   ]
+  },
+  {
+   "id": "homebrew",
+   "name": "Homebrew analytics (snapshot)",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://formulae.brew.sh/analytics/",
+   "access": "Open JSON API",
+   "cadence": "30, 90 and 365 day windows",
+   "measures": "Installs of the codex, claude-code, chatgpt and claude casks over 30, 90 and 365 days",
+   "blind_spot": "macOS and Linux developers who have not opted out of analytics",
+   "informs": [
+    "consumer",
+    "direct_api"
+   ],
+   "signals": [
+    "snapshots"
+   ]
+  },
+  {
+   "id": "github",
+   "name": "GitHub stars (snapshot)",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://docs.github.com/en/rest",
+   "access": "Open API, rate limited",
+   "cadence": "Daily",
+   "measures": "Stars on the official SDK and CLI repositories",
+   "blind_spot": "Interest, not spending; stars are cumulative and gameable",
+   "informs": [
+    "direct_api"
+   ],
+   "signals": [
+    "snapshots"
+   ]
+  },
+  {
+   "id": "wikipedia",
+   "name": "Wikipedia pageviews",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://wikimedia.org/api/rest_v1/",
+   "access": "Open API",
+   "cadence": "Daily",
+   "measures": "Views of the ChatGPT and Claude articles on English Wikipedia",
+   "blind_spot": "Curiosity and news cycles, not product use",
+   "informs": [
+    "consumer"
+   ],
+   "signals": [
+    "wikipedia"
+   ]
+  },
+  {
+   "id": "app_stores",
+   "name": "App Store charts and rating counts (snapshot)",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://rss.marketingtools.apple.com/",
+   "access": "Apple public chart feeds and lookup service; no public history",
+   "cadence": "Daily snapshot (must be collected forward)",
+   "measures": "Chart position and cumulative rating count of the ChatGPT and Claude iOS apps in six countries",
+   "blind_spot": "Rank reflects new downloads and ratings reflect past users; neither measures subscribers or revenue. iOS only",
+   "informs": [
+    "consumer",
+    "advertising"
+   ],
+   "signals": [
+    "snapshots"
+   ]
+  },
+  {
+   "id": "openrouter",
+   "name": "OpenRouter rankings (snapshot)",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://openrouter.ai/rankings",
+   "access": "Public rankings page; robots.txt allows it",
+   "cadence": "Weekly snapshot of the top 20 models and apps",
+   "measures": "OpenAI and Anthropic share of tokens among the top 20 models, and tokens used by the Codex and Claude Code apps",
+   "blind_spot": "Router users skew to hobbyist and price-sensitive workloads; not representative of enterprise contracts",
+   "informs": [
+    "direct_api"
+   ],
+   "signals": [
+    "snapshots"
+   ]
+  },
+  {
+   "id": "vercel",
+   "name": "Vercel AI Gateway index",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://vercel.com/blog/ai-gateway-production-index-september-2026",
+   "access": "Monthly public reports, transcribed by hand",
+   "cadence": "Monthly",
+   "measures": "Provider share of tokens and of list-price-valued spend through one gateway",
+   "blind_spot": "Gateway sample; list prices ignore discounts and credits; prior periods are revised",
+   "informs": [
+    "direct_api"
+   ],
+   "signals": [
+    "published"
+   ]
+  },
+  {
+   "id": "cloud_filings",
+   "name": "Cloud provider earnings releases",
+   "status": "live",
+   "kind": "signal",
+   "url": "https://www.sec.gov/edgar/search/",
+   "access": "Company releases and SEC filings, transcribed by hand",
+   "cadence": "Quarterly",
+   "measures": "Quarterly cloud revenue and growth at Amazon, Alphabet and Microsoft",
+   "blind_spot": "General cloud revenue, RPO and capex do not identify lab resale revenue; the lab is often the cloud's customer, the reverse direction",
+   "informs": [
+    "enterprise_cloud"
+   ],
+   "signals": [
+    "published"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+{
+  "url": "https://open-vsx.org/api/Anthropic/claude-code",
+  "retrieved_at_utc": "2026-10-04T22:31:03.500431+00:00",
+  "status": 200,
+  "headers": {
+    "Connection": "close",
+    "Content-Length": "10203",
+    "etag": "\"0b09898d72720d752bf3667f5bb61c44f\"",
+    "content-type": "application/json",
+    "x-ratelimit-remaining": "10798",
+    "x-ratelimit-limit": "10800",
+    "cache-control": "no-cache, public",
+    "Accept-Ranges": "bytes",
+    "Via": "1.1 varnish, 1.1 varnish",
+    "Content-Security-Policy": "frame-ancestors 'none'",
+    "Date": "Sun, 04 Oct 2026 22:31:03 GMT",
+    "X-Served-By": "cache-fra-etou8220087-FRA, cache-fra-etou8220054-FRA, cache-hhr-khhr2060038-HHR",
+    "X-Cache": "MISS, MISS, MISS",
+    "X-Cache-Hits": "0, 0, 0",
+    "X-Timer": "S1791153063.314921,VS0,VE174",
+    "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "1; mode=block",
+    "X-Content-Type-Options": "nosniff",
+    "Access-Control-Allow-Origin": "*",
+    "Vary": "Accept-Encoding",
+    "Strict-Transport-Security": "max-age=31557600"
+  },
+  "sha256_uncompressed_response": "1e3945db3c394d7c0f799a43cdc1f2de92f0088ecc9ded468f8b814dfd83af15",
+  "bytes": 10203
+}
