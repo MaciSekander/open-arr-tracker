@@ -1,11 +1,11 @@
 {
   "url": "https://open-vsx.org/api/openai/chatgpt",
-  "retrieved_at_utc": "2026-10-08T02:11:55.109303+00:00",
+  "retrieved_at_utc": "2026-10-08T02:17:22.670676+00:00",
   "status": 200,
   "headers": {
     "Connection": "close",
     "Content-Length": "10504",
-    "etag": "\"0978a58e9760c37abbae6ca485744a4e9\"",
+    "etag": "\"054358c81d54b49a35e7fc1cac6732e71\"",
     "x-ratelimit-limit": "10800",
     "content-type": "application/json",
     "cache-control": "no-cache, public",
@@ -13,11 +13,11 @@
     "Accept-Ranges": "bytes",
     "Via": "1.1 varnish, 1.1 varnish",
     "Content-Security-Policy": "frame-ancestors 'none'",
-    "Date": "Thu, 08 Oct 2026 02:11:55 GMT",
-    "X-Served-By": "cache-fra-eddf8230120-FRA, cache-fra-eddf8230102-FRA, cache-pao-kpao1770026-PAO",
+    "Date": "Thu, 08 Oct 2026 02:17:22 GMT",
+    "X-Served-By": "cache-fra-eddf8230084-FRA, cache-fra-eddf8230102-FRA, cache-bur-kbur8200042-BUR",
     "X-Cache": "MISS, MISS, MISS",
     "X-Cache-Hits": "0, 0, 0",
-    "X-Timer": "S1791425515.959894,VS0,VE189",
+    "X-Timer": "S1791425843.547585,VS0,VE159",
     "X-Frame-Options": "DENY",
     "X-XSS-Protection": "1; mode=block",
     "X-Content-Type-Options": "nosniff",
@@ -25,6 +25,6 @@
     "Vary": "Accept-Encoding",
     "Strict-Transport-Security": "max-age=31557600"
   },
-  "sha256_uncompressed_response": "b41f0a3396ecda6701924fa932662bf9ecfa1b0b34132559c7ab2aa35482e266",
+  "sha256_uncompressed_response": "856bf7220e9ee9c981bb61c6eb734bcaf3055724096e1e7b7a400b87c9b655ee",
   "bytes": 10504
 }

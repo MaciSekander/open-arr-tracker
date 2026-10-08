@@ -1,14 +1,14 @@
 {
   "url": "https://api.github.com/repos/anthropics/claude-code",
-  "retrieved_at_utc": "2026-10-08T02:11:56.100998+00:00",
+  "retrieved_at_utc": "2026-10-08T02:17:23.733597+00:00",
   "status": 200,
   "headers": {
-    "Date": "Thu, 08 Oct 2026 02:11:56 GMT",
+    "Date": "Thu, 08 Oct 2026 02:17:23 GMT",
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "public, max-age=60, s-maxage=60",
     "Vary": "Accept,Accept-Encoding, Accept, X-Requested-With",
-    "ETag": "W/\"e076209799ca29d6eb1c194d41e9bf580aaddd36e00e149fabcccfdb9f082e87\"",
-    "Last-Modified": "Thu, 08 Oct 2026 02:09:11 GMT",
+    "ETag": "W/\"036a4c86af7aac2e349dd0ecdb529aca7e3312a77e3b7880481e5ee57ba7743d\"",
+    "Last-Modified": "Thu, 08 Oct 2026 02:15:07 GMT",
     "X-GitHub-Media-Type": "github.v3; format=json",
     "x-github-api-version-selected": "2022-11-28",
     "Access-Control-Expose-Headers": "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning",
@@ -22,15 +22,15 @@
     "Server": "github.com",
     "Accept-Ranges": "bytes",
     "X-RateLimit-Limit": "60",
-    "X-RateLimit-Remaining": "58",
-    "X-RateLimit-Used": "2",
+    "X-RateLimit-Remaining": "54",
+    "X-RateLimit-Used": "6",
     "X-RateLimit-Resource": "core",
     "X-RateLimit-Reset": "1791429115",
     "Content-Length": "6921",
-    "X-GitHub-Request-Id": "F669:379BD0:55967:607F6:6AC6FBEB",
+    "X-GitHub-Request-Id": "F698:240E73:561D5:62F8C:6AC6FD33",
     "x-github-edge-region": "westus3",
     "connection": "close"
   },
-  "sha256_uncompressed_response": "e076209799ca29d6eb1c194d41e9bf580aaddd36e00e149fabcccfdb9f082e87",
+  "sha256_uncompressed_response": "036a4c86af7aac2e349dd0ecdb529aca7e3312a77e3b7880481e5ee57ba7743d",
   "bytes": 6921
 }

@@ -1,9 +1,9 @@
 {
   "url": "https://api.github.com/repos/openai/openai-python",
-  "retrieved_at_utc": "2026-10-08T02:11:56.385415+00:00",
+  "retrieved_at_utc": "2026-10-08T02:17:24.021884+00:00",
   "status": 200,
   "headers": {
-    "Date": "Thu, 08 Oct 2026 02:11:56 GMT",
+    "Date": "Thu, 08 Oct 2026 02:17:24 GMT",
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "public, max-age=60, s-maxage=60",
     "Vary": "Accept,Accept-Encoding, Accept, X-Requested-With",
@@ -22,12 +22,12 @@
     "Server": "github.com",
     "Accept-Ranges": "bytes",
     "X-RateLimit-Limit": "60",
-    "X-RateLimit-Remaining": "57",
-    "X-RateLimit-Used": "3",
+    "X-RateLimit-Remaining": "53",
+    "X-RateLimit-Used": "7",
     "X-RateLimit-Resource": "core",
     "X-RateLimit-Reset": "1791429115",
     "Content-Length": "6381",
-    "X-GitHub-Request-Id": "F66A:D907B:49E02:5452A:6AC6FBEC",
+    "X-GitHub-Request-Id": "F699:240FCE:4C2E9:58EE8:6AC6FD33",
     "x-github-edge-region": "westus3",
     "connection": "close"
   },

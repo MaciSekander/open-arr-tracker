@@ -1,10 +1,10 @@
 {
   "url": "https://rss.marketingtools.apple.com/api/v2/us/apps/top-free/100/apps.json",
-  "retrieved_at_utc": "2026-10-08T02:13:01.131260+00:00",
+  "retrieved_at_utc": "2026-10-08T02:17:26.610621+00:00",
   "status": 200,
   "headers": {
     "Server": "Apple",
-    "Date": "Thu, 08 Oct 2026 02:13:01 GMT",
+    "Date": "Thu, 08 Oct 2026 02:17:26 GMT",
     "Content-Type": "application/json; charset=utf-8",
     "Transfer-Encoding": "chunked",
     "Connection": "close",
@@ -14,13 +14,13 @@
     "X-Download-Options": "noopen",
     "X-Permitted-Cross-Domain-Policies": "none",
     "Referrer-Policy": "strict-origin-when-cross-origin",
-    "ETag": "W/\"a9a6b736465e07ce8804ecaa950b9942\"",
+    "ETag": "W/\"731b8fe8b9f61f230f8b66624cffc599\"",
     "Cache-Control": "max-age=0, private, must-revalidate",
-    "Content-Security-Policy": "base-uri 'self'; default-src 'self'; font-src 'self' data: https:; img-src 'self' data: https:; object-src 'none'; script-src 'self' 'nonce-DAY5Z/BO/Uivn/CcnsA8Jg=='; style-src 'self' https: 'nonce-DAY5Z/BO/Uivn/CcnsA8Jg=='",
-    "X-Request-Id": "b6298359-4072-476c-86af-efd0ecd223c9",
-    "X-Runtime": "0.572162",
+    "Content-Security-Policy": "base-uri 'self'; default-src 'self'; font-src 'self' data: https:; img-src 'self' data: https:; object-src 'none'; script-src 'self' 'nonce-I2uzApjLR0U3pC/GIoo3gA=='; style-src 'self' https: 'nonce-I2uzApjLR0U3pC/GIoo3gA=='",
+    "X-Request-Id": "21c6e9cf-cf57-4a24-b1e3-bd1acb07b125",
+    "X-Runtime": "0.541664",
     "Strict-Transport-Security": "max-age=31536000; includeSubdomains"
   },
-  "sha256_uncompressed_response": "a9a6b736465e07ce8804ecaa950b9942c2483f9c0db9264f9fb203d77b1ff35a",
+  "sha256_uncompressed_response": "731b8fe8b9f61f230f8b66624cffc59995252a3a7792c45a57f49c8dd79ca44a",
   "bytes": 52315
 }

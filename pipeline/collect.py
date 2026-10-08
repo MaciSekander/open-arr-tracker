@@ -102,10 +102,16 @@ def snapshots(out, carry=None):
                  'value': json.loads(fetch(f'https://api.github.com/repos/{repo}', out / 'raw' / f'github_{slug(repo)}.json.gz'))['stargazers_count']} for repo in GITHUB]
 
     def apple_top_free():
-        rows = []
+        # Apple's newer chart feed times out now and then; the older iTunes feed carries the same chart, so it is the fallback.
+        rows, ids = [], {str(v): k for k, v in APPLE_IDS.items()}
         for cc in APPLE_COUNTRIES:
-            raw = json.loads(fetch(f'https://rss.marketingtools.apple.com/api/v2/{cc}/apps/top-free/100/apps.json', out / 'raw' / f'apple_topfree_{cc}.json.gz'))
-            rank = {r['name']: i + 1 for i, r in enumerate(raw['feed']['results'])}
+            try:
+                raw = json.loads(fetch(f'https://rss.marketingtools.apple.com/api/v2/{cc}/apps/top-free/100/apps.json', out / 'raw' / f'apple_topfree_{cc}.json.gz'))
+                order = [str(r['id']) for r in raw['feed']['results']]
+            except Exception:
+                raw = json.loads(fetch(f'https://itunes.apple.com/{cc}/rss/topfreeapplications/limit=100/json', out / 'raw' / f'apple_topfree_{cc}_itunes.json.gz'))
+                order = [e['id']['attributes']['im:id'] for e in raw['feed']['entry']]
+            rank = {ids[x]: i + 1 for i, x in enumerate(order) if x in ids}
             rows += [{'source': 'apple_top_free', 'item': f'{app} ({cc})', 'metric': 'rank_top100', 'value': rank.get(app, ''), 'period_start': '', 'period_end': ''} for app in APPLE_APPS]
         return rows
 

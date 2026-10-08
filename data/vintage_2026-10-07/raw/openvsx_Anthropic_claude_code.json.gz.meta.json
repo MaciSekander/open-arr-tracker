@@ -1,6 +1,6 @@
 {
   "url": "https://open-vsx.org/api/Anthropic/claude-code",
-  "retrieved_at_utc": "2026-10-08T02:11:55.400413+00:00",
+  "retrieved_at_utc": "2026-10-08T02:17:22.985778+00:00",
   "status": 200,
   "headers": {
     "Connection": "close",
@@ -13,11 +13,11 @@
     "Accept-Ranges": "bytes",
     "Via": "1.1 varnish, 1.1 varnish",
     "Content-Security-Policy": "frame-ancestors 'none'",
-    "Date": "Thu, 08 Oct 2026 02:11:55 GMT",
-    "X-Served-By": "cache-fra-etou8220115-FRA, cache-fra-etou8220054-FRA, cache-pao-kpao1770038-PAO",
+    "Date": "Thu, 08 Oct 2026 02:17:23 GMT",
+    "X-Served-By": "cache-fra-etou8220109-FRA, cache-fra-etou8220054-FRA, cache-bur-kbur8200077-BUR",
     "X-Cache": "MISS, MISS, MISS",
     "X-Cache-Hits": "0, 0, 0",
-    "X-Timer": "S1791425515.274033,VS0,VE167",
+    "X-Timer": "S1791425843.841000,VS0,VE164",
     "X-Frame-Options": "DENY",
     "X-XSS-Protection": "1; mode=block",
     "X-Content-Type-Options": "nosniff",

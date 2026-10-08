@@ -21,9 +21,7 @@
       "ok": true,
       "result": {
         "rows": 49,
-        "carried_forward_after_failure": {
-          "apple_top_free": "HTTPError: HTTP Error 504: Gateway Time-out"
-        }
+        "carried_forward_after_failure": {}
       }
     },
     "ramp": {
