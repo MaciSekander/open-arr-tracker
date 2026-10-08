@@ -1,9 +1,9 @@
 {
   "url": "https://api.github.com/repos/anthropics/anthropic-sdk-python",
-  "retrieved_at_utc": "2026-10-08T02:11:56.686774+00:00",
+  "retrieved_at_utc": "2026-10-08T02:17:24.312005+00:00",
   "status": 200,
   "headers": {
-    "Date": "Thu, 08 Oct 2026 02:11:56 GMT",
+    "Date": "Thu, 08 Oct 2026 02:17:24 GMT",
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "public, max-age=60, s-maxage=60",
     "Vary": "Accept,Accept-Encoding, Accept, X-Requested-With",
@@ -22,12 +22,12 @@
     "Server": "github.com",
     "Accept-Ranges": "bytes",
     "X-RateLimit-Limit": "60",
-    "X-RateLimit-Remaining": "56",
-    "X-RateLimit-Used": "4",
+    "X-RateLimit-Remaining": "52",
+    "X-RateLimit-Used": "8",
     "X-RateLimit-Resource": "core",
     "X-RateLimit-Reset": "1791429115",
     "Content-Length": "7125",
-    "X-GitHub-Request-Id": "F66B:15DCA:42C86:4D271:6AC6FBEC",
+    "X-GitHub-Request-Id": "F69A:15D73:5240F:5F14A:6AC6FD34",
     "x-github-edge-region": "westus3",
     "connection": "close"
   },

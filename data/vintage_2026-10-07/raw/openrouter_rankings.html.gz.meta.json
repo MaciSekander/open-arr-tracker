@@ -1,13 +1,13 @@
 {
   "url": "https://openrouter.ai/rankings",
-  "retrieved_at_utc": "2026-10-08T02:14:38.155083+00:00",
+  "retrieved_at_utc": "2026-10-08T02:17:39.166247+00:00",
   "status": 200,
   "headers": {
-    "Date": "Thu, 08 Oct 2026 02:14:38 GMT",
+    "Date": "Thu, 08 Oct 2026 02:17:39 GMT",
     "Content-Type": "text/html; charset=utf-8",
     "Transfer-Encoding": "chunked",
     "Connection": "close",
-    "Age": "25",
+    "Age": "206",
     "Cache-Control": "public, max-age=0, must-revalidate",
     "Referrer-Policy": "no-referrer, strict-origin-when-cross-origin",
     "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://clerk.openrouter.ai https://*.protect.clerk.com https://*.client.protect.clerk.com https://challenges.cloudflare.com https://checkout.stripe.com https://connect-js.stripe.com https://js.stripe.com https://maps.googleapis.com https://www.googletagmanager.com https://*.googletagmanager.com 'wasm-unsafe-eval' https://unpkg.com https://esm.sh https://static.cloudflareinsights.com https://cdn.jsdelivr.net https://*.algolia.net https://*.algolianet.com https://app.buildwithfern.com https://prod.ferndocs.com https://cdn.segment.com https://jobs.ashbyhq.com https://*.posthog.com https://cdn.tldraw.com; connect-src 'self' blob: https://model-assets.openrouter.ai https://clerk.openrouter.ai https://*.protect.clerk.com https://*.client.protect.clerk.com https://*.protect.clerk.com:* https://clerk-telemetry.com https://checkout.stripe.com https://api.stripe.com https://m.stripe.com https://maps.googleapis.com *.google-analytics.com https://www.googletagmanager.com https://www.google.com https://*.analytics.google.com https://analytics.google.com https://*.google-analytics.com https://*.googletagmanager.com https://*.g.doubleclick.net https://fonts.googleapis.com https://raw.githubusercontent.com wss://www.walletlink.org/rpc https://static.cloudflareinsights.com https://esm.sh https://*.browser-intake-datadoghq.com https://browser-intake-us5-datadoghq.com https://rum.browser-intake-us5-datadoghq.com https://api-na2.hsforms.com https://*.algolia.net https://*.algolianet.com https://app.buildwithfern.com https://prod.ferndocs.com https://api.segment.io https://cdn.segment.com https://www.openrouter.ai https://openrouter.ai https://jobs.ashbyhq.com https://api.ashbyhq.com/ https://*.posthog.com https://cdn.tldraw.com https://wrapped.openrouter.ai https://storage.googleapis.com; frame-src 'self' https://model-assets.openrouter.ai https://*.protect.clerk.com https://*.client.protect.clerk.com https://challenges.cloudflare.com https://checkout.stripe.com https://connect-js.stripe.com https://js.stripe.com https://hooks.stripe.com https://m.stripe.network https://us5.datadoghq.com https://share-na2.hsforms.com https://www.youtube.com https://app.buildwithfern.com https://prod.ferndocs.com https://jobs.ashbyhq.com; img-src 'self' data: blob: https://*.github.io https://model-assets.openrouter.ai https://img.clerk.com https://*.stripe.com https://www.googletagmanager.com www.google.com https://*.google-analytics.com https://*.googletagmanager.com https://analytics.google.com https://*.analytics.google.com https://*.g.doubleclick.net https://source.unsplash.com https://t0.gstatic.com https://imagedelivery.net https://raw.githubusercontent.com https://*.algolia.io https://files.buildwithfern.com https://icons.ferndocs.com https://cdn.tldraw.com https://wrapped.openrouter.ai; media-src 'self' data: blob: https://model-assets.openrouter.ai https://vgi-bench-mirror.openrouter.ai; worker-src 'self' blob: data:; style-src 'self' 'unsafe-inline' sha256-0hAheEzaMe6uXIKV4EehS9pu1am1lj/KnnzrOYqckXk= https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net https://app.buildwithfern.com https://prod.ferndocs.com https://jobs.ashbyhq.com https://*.posthog.com https://cdn.tldraw.com; frame-ancestors 'self'; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdn.tldraw.com; upgrade-insecure-requests",
@@ -23,11 +23,11 @@
     "X-Nextjs-Stale-Time": "300",
     "X-Powered-By": "Next.js",
     "X-Vercel-Cache": "HIT",
-    "X-Vercel-Id": "sfo1::sin1::jfztr-1791425678031-6bebe5e5527a",
+    "X-Vercel-Id": "sfo1::sin1::dvt7q-1791425859055-1fbbc23aec8c",
     "cf-cache-status": "DYNAMIC",
-    "Server-Timing": "cfEdge;dur=5,cfOrigin;dur=44",
-    "CF-RAY": "a471a217adf1f497-SJC"
+    "Server-Timing": "cfEdge;dur=4,cfOrigin;dur=49",
+    "CF-RAY": "a471a683081cac07-SJC"
   },
-  "sha256_uncompressed_response": "a85203293ae741b5ac155aa8580cc4cbf1abb2714c2f9a5e6128d8d2c811fedf",
+  "sha256_uncompressed_response": "4e2b9443f566dbffa46763c82f6d01693cfa29b6eef8248d1a028b53823044a4",
   "bytes": 2562685
 }

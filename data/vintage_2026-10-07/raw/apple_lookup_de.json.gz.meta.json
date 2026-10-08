@@ -1,6 +1,6 @@
 {
   "url": "https://itunes.apple.com/lookup?id=6448311069,6473753684&country=de",
-  "retrieved_at_utc": "2026-10-08T02:14:36.483092+00:00",
+  "retrieved_at_utc": "2026-10-08T02:17:38.499854+00:00",
   "status": 200,
   "headers": {
     "Server": "daiquiri/5",
@@ -27,13 +27,12 @@
     "x-daiquiri-instance": "daiquiri:42282004:st53p00it-qujn12050502:7987:26HOTFIX41:daiquiri-amp-store-l7shared-ext-001-st",
     "x-daiquiri-debug-worker-pid": "98692",
     "Vary": "Accept-Encoding",
-    "Cache-Control": "max-age=86400",
-    "Date": "Thu, 08 Oct 2026 02:14:36 GMT",
+    "Cache-Control": "max-age=86218",
+    "Date": "Thu, 08 Oct 2026 02:17:38 GMT",
     "Content-Length": "24099",
-    "X-Cache": "TCP_MISS from a23-216-148-207.deploy.akamaitechnologies.com (AkamaiGHost/22.6.4-888a2d21768272d5e2d80e9762941e76) (-)",
+    "X-Cache": "TCP_HIT from a23-216-148-207.deploy.akamaitechnologies.com (AkamaiGHost/22.6.4-888a2d21768272d5e2d80e9762941e76) (-)",
     "X-True-Cache-Key": "/L/itunes.apple.com/lookup vcd=2897 ci2=country=de&id=6448311069,6473753684///",
     "Connection": "close",
-    "X-Cache-Remote": "TCP_MISS from a23-36-241-230.deploy.akamaitechnologies.com (AkamaiGHost/22.6.4-888a2d21768272d5e2d80e9762941e76) (-)",
     "X-Apple-Partner": "origin.0"
   },
   "sha256_uncompressed_response": "aa224b54b710ce8c2b9be2187d28ffc43e5e0e0168b3545dc5ae88e1729136ed",
