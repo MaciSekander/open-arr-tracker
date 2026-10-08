@@ -158,7 +158,7 @@ date,package,downloads_raw,quality_flag
 2026-05-06,openai,3594856,observed_positive
 2026-05-07,openai,3549331,observed_positive
 2026-05-08,openai,3262065,observed_positive
-2026-05-09,openai,0,zero_unverified
+2026-05-09,openai,1775834,observed_positive
 2026-05-10,openai,1721493,observed_positive
 2026-05-11,openai,3532860,observed_positive
 2026-05-12,openai,3812108,observed_positive
@@ -306,6 +306,9 @@ date,package,downloads_raw,quality_flag
 2026-10-01,openai,8583096,observed_positive
 2026-10-02,openai,7810893,observed_positive
 2026-10-03,openai,4962723,observed_positive
+2026-10-04,openai,4930550,observed_positive
+2026-10-05,openai,7710454,observed_positive
+2026-10-06,openai,0,zero_unverified
 2025-12-01,@anthropic-ai/sdk,520551,observed_positive
 2025-12-02,@anthropic-ai/sdk,593398,observed_positive
 2025-12-03,@anthropic-ai/sdk,570716,observed_positive
@@ -613,6 +616,9 @@ date,package,downloads_raw,quality_flag
 2026-10-01,@anthropic-ai/sdk,9045260,observed_positive
 2026-10-02,@anthropic-ai/sdk,8248624,observed_positive
 2026-10-03,@anthropic-ai/sdk,5547966,observed_positive
+2026-10-04,@anthropic-ai/sdk,5502689,observed_positive
+2026-10-05,@anthropic-ai/sdk,8300861,observed_positive
+2026-10-06,@anthropic-ai/sdk,0,zero_unverified
 2025-12-01,@ai-sdk/openai,382936,observed_positive
 2025-12-02,@ai-sdk/openai,445054,observed_positive
 2025-12-03,@ai-sdk/openai,449679,observed_positive
@@ -920,6 +926,9 @@ date,package,downloads_raw,quality_flag
 2026-10-01,@ai-sdk/openai,3002068,observed_positive
 2026-10-02,@ai-sdk/openai,2724132,observed_positive
 2026-10-03,@ai-sdk/openai,1494276,observed_positive
+2026-10-04,@ai-sdk/openai,1441683,observed_positive
+2026-10-05,@ai-sdk/openai,2767092,observed_positive
+2026-10-06,@ai-sdk/openai,0,zero_unverified
 2025-12-01,@ai-sdk/anthropic,259374,observed_positive
 2025-12-02,@ai-sdk/anthropic,326854,observed_positive
 2025-12-03,@ai-sdk/anthropic,299760,observed_positive
@@ -1227,6 +1236,9 @@ date,package,downloads_raw,quality_flag
 2026-10-01,@ai-sdk/anthropic,2934050,observed_positive
 2026-10-02,@ai-sdk/anthropic,2664174,observed_positive
 2026-10-03,@ai-sdk/anthropic,1496914,observed_positive
+2026-10-04,@ai-sdk/anthropic,1508789,observed_positive
+2026-10-05,@ai-sdk/anthropic,2752484,observed_positive
+2026-10-06,@ai-sdk/anthropic,0,zero_unverified
 2025-12-01,@openai/codex,89342,observed_positive
 2025-12-02,@openai/codex,79380,observed_positive
 2025-12-03,@openai/codex,79009,observed_positive
@@ -1534,6 +1546,9 @@ date,package,downloads_raw,quality_flag
 2026-10-01,@openai/codex,4288249,observed_positive
 2026-10-02,@openai/codex,3865489,observed_positive
 2026-10-03,@openai/codex,2672889,observed_positive
+2026-10-04,@openai/codex,2639856,observed_positive
+2026-10-05,@openai/codex,3594216,observed_positive
+2026-10-06,@openai/codex,0,zero_unverified
 2025-12-01,@anthropic-ai/claude-code,671430,observed_positive
 2025-12-02,@anthropic-ai/claude-code,1175496,observed_positive
 2025-12-03,@anthropic-ai/claude-code,1354205,observed_positive
@@ -1841,3 +1856,6 @@ date,package,downloads_raw,quality_flag
 2026-10-01,@anthropic-ai/claude-code,2616857,observed_positive
 2026-10-02,@anthropic-ai/claude-code,2005486,observed_positive
 2026-10-03,@anthropic-ai/claude-code,1297117,observed_positive
+2026-10-04,@anthropic-ai/claude-code,904105,observed_positive
+2026-10-05,@anthropic-ai/claude-code,2246081,observed_positive
+2026-10-06,@anthropic-ai/claude-code,0,zero_unverified

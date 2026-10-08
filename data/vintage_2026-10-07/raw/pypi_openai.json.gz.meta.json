@@ -1,0 +1,14 @@
+{
+  "url": "https://pypistats.org/api/packages/openai/overall?mirrors=false",
+  "retrieved_at_utc": "2026-10-08T02:11:31.841977+00:00",
+  "status": 200,
+  "headers": {
+    "Content-Length": "13174",
+    "Content-Type": "application/json",
+    "Date": "Thu, 08 Oct 2026 02:11:31 GMT",
+    "Server": "gunicorn",
+    "Connection": "close"
+  },
+  "sha256_uncompressed_response": "c6ee7c13752f8b13af47bb2d413ba8b9f5fcbb63ccf1a7c776ff28d5664e543b",
+  "bytes": 13174
+}

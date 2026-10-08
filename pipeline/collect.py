@@ -3,7 +3,8 @@
     python3 pipeline/collect.py --end 2026-10-03 [--carry-tranco data/vintage_2026-09-22]
 
 Writes data/vintage_<today>/ with raw responses (URL, timestamp, hash) and tidy CSVs.
-Pass --carry-tranco with the previous vintage: its sampled ranks are kept and one new list per week is added.
+Pass --carry-tranco with the previous vintage: its sampled ranks are kept and one new list per week is added, and
+any secondary source that fails is carried forward from it. Only npm and Ramp failing stops the run.
 Sources revise history, so keep every vintage.
 """
 import argparse, csv, datetime as dt, json, shutil, sys, time, urllib.parse
@@ -21,6 +22,8 @@ WIKI = ['ChatGPT', 'Claude_(language_model)', 'Claude_(AI)']  # the Claude artic
 BREW_CASKS = ['codex', 'claude-code', 'claude-code@latest', 'chatgpt', 'claude']
 OPEN_VSX = ['openai/chatgpt', 'Anthropic/claude-code']
 GITHUB = ['openai/codex', 'anthropics/claude-code', 'openai/openai-python', 'anthropics/anthropic-sdk-python']
+CORE = ['npm', 'ramp']
+CARRY_FILES = {'pypi': 'pypi_daily.csv', 'wikipedia': 'wikipedia_daily.csv', 'tranco': 'tranco_sampled.csv'}
 APPLE_COUNTRIES = ['us', 'gb', 'de', 'jp', 'in', 'br']
 APPLE_APPS = {'ChatGPT': 'OpenAI', 'Claude by Anthropic': 'Anthropic'}
 APPLE_IDS = {'ChatGPT': 6448311069, 'Claude by Anthropic': 6473753684}
@@ -77,34 +80,57 @@ def wikipedia(start, end, out):
     return len(rows)
 
 
-def snapshots(out):
-    """Sources with no public history. Each run adds one observation; trends build up across vintages."""
-    rows = []
-    for window in ['30d', '90d', '365d']:
-        raw = json.loads(fetch(f'https://formulae.brew.sh/api/analytics/cask-install/{window}.json', out / 'raw' / f'homebrew_cask_{window}.json.gz'))
-        found = {it['cask']: int(it['count'].replace(',', '')) for it in raw['items'] if it['cask'] in BREW_CASKS}
-        for cask in BREW_CASKS:
-            rows.append({'source': 'homebrew', 'item': cask, 'metric': f'installs_{window}', 'value': found.get(cask, ''), 'period_start': raw['start_date'], 'period_end': raw['end_date']})
-    for ext in OPEN_VSX:
-        raw = json.loads(fetch(f'https://open-vsx.org/api/{ext}', out / 'raw' / f'openvsx_{slug(ext)}.json.gz'))
-        rows.append({'source': 'open_vsx', 'item': ext, 'metric': 'downloads_cumulative', 'value': raw['downloadCount'], 'period_start': '', 'period_end': ''})
-    for repo in GITHUB:
-        raw = json.loads(fetch(f'https://api.github.com/repos/{repo}', out / 'raw' / f'github_{slug(repo)}.json.gz'))
-        rows.append({'source': 'github', 'item': repo, 'metric': 'stars_cumulative', 'value': raw['stargazers_count'], 'period_start': '', 'period_end': ''})
-    for cc in APPLE_COUNTRIES:
-        raw = json.loads(fetch(f'https://rss.marketingtools.apple.com/api/v2/{cc}/apps/top-free/100/apps.json', out / 'raw' / f'apple_topfree_{cc}.json.gz'))
-        rank = {r['name']: i + 1 for i, r in enumerate(raw['feed']['results'])}
-        for app in APPLE_APPS:
-            rows.append({'source': 'apple_top_free', 'item': f'{app} ({cc})', 'metric': 'rank_top100', 'value': rank.get(app, ''), 'period_start': '', 'period_end': ''})
-    # Cumulative App Store ratings: no history is published, so growth appears only across vintages.
-    for cc in APPLE_COUNTRIES:
-        raw = json.loads(fetch(f'https://itunes.apple.com/lookup?id={",".join(str(i) for i in APPLE_IDS.values())}&country={cc}', out / 'raw' / f'apple_lookup_{cc}.json.gz'))
-        count = {r['trackId']: r.get('userRatingCount') for r in raw['results']}
-        for app, app_id in APPLE_IDS.items():
-            rows.append({'source': 'apple_ratings', 'item': f'{app} ({cc})', 'metric': 'ratings_cumulative', 'value': count.get(app_id, ''), 'period_start': '', 'period_end': ''})
-    rows += openrouter(out)
+def snapshots(out, carry=None):
+    """Sources with no public history. Each run adds one observation; trends build up across vintages.
+
+    Each source is collected on its own: one that fails is carried forward from the previous vintage and reported.
+    """
+    def homebrew():
+        rows = []
+        for window in ['30d', '90d', '365d']:
+            raw = json.loads(fetch(f'https://formulae.brew.sh/api/analytics/cask-install/{window}.json', out / 'raw' / f'homebrew_cask_{window}.json.gz'))
+            found = {it['cask']: int(it['count'].replace(',', '')) for it in raw['items'] if it['cask'] in BREW_CASKS}
+            rows += [{'source': 'homebrew', 'item': cask, 'metric': f'installs_{window}', 'value': found.get(cask, ''), 'period_start': raw['start_date'], 'period_end': raw['end_date']} for cask in BREW_CASKS]
+        return rows
+
+    def open_vsx():
+        return [{'source': 'open_vsx', 'item': ext, 'metric': 'downloads_cumulative', 'period_start': '', 'period_end': '',
+                 'value': json.loads(fetch(f'https://open-vsx.org/api/{ext}', out / 'raw' / f'openvsx_{slug(ext)}.json.gz'))['downloadCount']} for ext in OPEN_VSX]
+
+    def github():
+        return [{'source': 'github', 'item': repo, 'metric': 'stars_cumulative', 'period_start': '', 'period_end': '',
+                 'value': json.loads(fetch(f'https://api.github.com/repos/{repo}', out / 'raw' / f'github_{slug(repo)}.json.gz'))['stargazers_count']} for repo in GITHUB]
+
+    def apple_top_free():
+        rows = []
+        for cc in APPLE_COUNTRIES:
+            raw = json.loads(fetch(f'https://rss.marketingtools.apple.com/api/v2/{cc}/apps/top-free/100/apps.json', out / 'raw' / f'apple_topfree_{cc}.json.gz'))
+            rank = {r['name']: i + 1 for i, r in enumerate(raw['feed']['results'])}
+            rows += [{'source': 'apple_top_free', 'item': f'{app} ({cc})', 'metric': 'rank_top100', 'value': rank.get(app, ''), 'period_start': '', 'period_end': ''} for app in APPLE_APPS]
+        return rows
+
+    def apple_ratings():
+        # Cumulative App Store ratings: no history is published, so growth appears only across vintages.
+        rows = []
+        for cc in APPLE_COUNTRIES:
+            raw = json.loads(fetch(f'https://itunes.apple.com/lookup?id={",".join(str(i) for i in APPLE_IDS.values())}&country={cc}', out / 'raw' / f'apple_lookup_{cc}.json.gz'))
+            count = {r['trackId']: r.get('userRatingCount') for r in raw['results']}
+            rows += [{'source': 'apple_ratings', 'item': f'{app} ({cc})', 'metric': 'ratings_cumulative', 'value': count.get(app_id, ''), 'period_start': '', 'period_end': ''} for app, app_id in APPLE_IDS.items()]
+        return rows
+
+    previous = []
+    if carry and (carry / 'snapshots.csv').exists():
+        with (carry / 'snapshots.csv').open() as f:
+            previous = list(csv.DictReader(f))
+    rows, failed = [], {}
+    for name, step in [('homebrew', homebrew), ('open_vsx', open_vsx), ('github', github), ('apple_top_free', apple_top_free), ('apple_ratings', apple_ratings), ('openrouter', lambda: openrouter(out))]:
+        try:
+            rows += step()
+        except Exception as e:
+            failed[name] = f'{type(e).__name__}: {e}'
+            rows += [r for r in previous if r['source'] == name]
     write(out / 'snapshots.csv', rows)
-    return len(rows)
+    return {'rows': len(rows), 'carried_forward_after_failure': failed}
 
 
 def openrouter(out):
@@ -176,18 +202,23 @@ if __name__ == '__main__':
     out.mkdir(parents=True, exist_ok=True)
     manifest = out / 'manifest.json'
     report = json.loads(manifest.read_text()) if a.only and manifest.exists() else {'vintage': a.vintage, 'requested': [str(a.start), str(a.end)], 'sources': {}}
+    src = (a.carry_tranco if a.carry_tranco.is_absolute() else ROOT / a.carry_tranco) if a.carry_tranco else None
     steps = {'npm': lambda: npm(a.start, a.end, out), 'pypi': lambda: pypi(out), 'wikipedia': lambda: wikipedia(a.start, a.end, out),
-             'snapshots': lambda: snapshots(out), 'ramp': lambda: ramp(a.start, a.end, out)}
-    if a.carry_tranco:
-        src = a.carry_tranco if a.carry_tranco.is_absolute() else ROOT / a.carry_tranco
+             'snapshots': lambda: snapshots(out, src), 'ramp': lambda: ramp(a.start, a.end, out)}
+    if src:
         steps['tranco'] = lambda: tranco(a.end, out, src)
     if a.only:
         steps = {k: steps[k] for k in a.only.split(',')}
     for name, step in steps.items():
         try:
             report['sources'][name] = {'ok': True, 'result': step()}
-        except Exception as e:  # one failed source must not silently drop; it is recorded and the run exits non-zero
+        except Exception as e:  # never dropped silently: recorded in the manifest, and the last good file is carried forward
             report['sources'][name] = {'ok': False, 'error': f'{type(e).__name__}: {e}'}
+            f = CARRY_FILES.get(name)
+            if f and src and (src / f).exists() and src != out:
+                shutil.copy(src / f, out / f)
+                report['sources'][name]['carried_forward_from'] = src.name
     manifest.write_text(json.dumps(report, indent=2))
     print(json.dumps(report, indent=2))
-    sys.exit(0 if all(s['ok'] for s in report['sources'].values()) else 1)
+    # The estimates need npm and Ramp. Anything else can lag a week without breaking the site.
+    sys.exit(0 if all(report['sources'].get(k, {}).get('ok', a.only is not None) for k in CORE) else 1)
