@@ -17,7 +17,7 @@ jobs:
         run: |
           PREV=$(ls -d data/vintage_* | sort | tail -1)
           END=$(date -u -d "yesterday" +%F)
-          python3 pipeline/collect.py --end "$END" --carry-tranco "$PREV"
+          python3 pipeline/collect.py --end "$END" --carry-tranco "$PREV"   # exits non-zero only if npm or Ramp fail
       - run: python3 pipeline/build.py
       - name: Commit the vintage
         run: |

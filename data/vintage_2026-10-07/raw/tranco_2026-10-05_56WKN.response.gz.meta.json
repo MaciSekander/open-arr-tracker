@@ -1,0 +1,25 @@
+{
+  "url": "https://tranco-list.eu/download/56WKN/1000000",
+  "retrieved_at_utc": "2026-10-08T02:14:42.269200+00:00",
+  "status": 200,
+  "headers": {
+    "Date": "Thu, 08 Oct 2026 02:14:41 GMT",
+    "Content-Type": "text/csv; charset=utf-8",
+    "Transfer-Encoding": "chunked",
+    "Connection": "close",
+    "Server": "cloudflare",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Content-Disposition": "Attachment;filename=tranco_56WKN.csv",
+    "Cache-Control": "public, max-age=86400",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=p6X2BFnkPzY07u7Kt1bMJDJbOYd7fgjMJE%2BcvgjKd9KtVR1ZUkzcKmFxflR8B5QMI4xUHK9Hdj2nl4EFGiknWK6CPCxN7htNREZv4uvRHN%2BnRmHqIJIqXGuCydPSpfwPsv2Cq1QnhPsyuJdDqg%3D%3D\"}]}",
+    "X-Frame-Options": "DENY",
+    "vary": "accept-encoding",
+    "last-modified": "Thu, 08 Oct 2026 02:14:41 GMT",
+    "cf-cache-status": "HIT",
+    "Server-Timing": "cfEdge;dur=183,cfOrigin;dur=0",
+    "CF-RAY": "a471a22e9a22ac07-SJC",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "sha256_uncompressed_response": "d34e066308563cc53fe0cea00103abe7b896f0bfc7f73bc241e57a9dc2cd4bd1",
+  "bytes": 22606787
+}
