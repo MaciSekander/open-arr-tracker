@@ -1,0 +1,32 @@
+{
+  "url": "https://formulae.brew.sh/api/analytics/cask-install/30d.json",
+  "retrieved_at_utc": "2026-10-12T09:26:36.239239+00:00",
+  "status": 200,
+  "headers": {
+    "Connection": "close",
+    "Content-Length": "811839",
+    "Server": "GitHub.com",
+    "Content-Type": "application/json; charset=utf-8",
+    "x-origin-cache": "HIT",
+    "Last-Modified": "Mon, 12 Oct 2026 09:20:17 GMT",
+    "Access-Control-Allow-Origin": "*",
+    "ETag": "\"6acca651-c633f\"",
+    "expires": "Mon, 12 Oct 2026 09:36:36 GMT",
+    "Cache-Control": "max-age=600",
+    "x-proxy-cache": "MISS",
+    "X-GitHub-Request-Id": "0B52:2C29B8:1C7BE:20EAB:6ACCA7CB",
+    "x-github-edge-region": "westus3",
+    "Accept-Ranges": "bytes",
+    "Age": "0",
+    "Date": "Mon, 12 Oct 2026 09:26:36 GMT",
+    "Via": "1.1 varnish",
+    "X-Served-By": "cache-pao-kpao1770072-PAO",
+    "X-Cache": "MISS",
+    "X-Cache-Hits": "0",
+    "X-Timer": "S1791797196.140784,VS0,VE92",
+    "Vary": "Accept-Encoding",
+    "X-Fastly-Request-ID": "8eacc1b508ec2e03ea823ea0eff2bb32e21dbaa1"
+  },
+  "sha256_uncompressed_response": "27ae41befc07c36039ccc48e0a90eca68bc33e7d5d41265723707499d29efcd8",
+  "bytes": 811839
+}

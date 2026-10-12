@@ -1,0 +1,32 @@
+{
+  "url": "https://formulae.brew.sh/api/analytics/cask-install/365d.json",
+  "retrieved_at_utc": "2026-10-12T09:26:36.692618+00:00",
+  "status": 200,
+  "headers": {
+    "Connection": "close",
+    "Content-Length": "1932590",
+    "Server": "GitHub.com",
+    "Content-Type": "application/json; charset=utf-8",
+    "x-origin-cache": "HIT",
+    "Last-Modified": "Mon, 12 Oct 2026 09:20:16 GMT",
+    "Access-Control-Allow-Origin": "*",
+    "ETag": "\"6acca650-1d7d2e\"",
+    "expires": "Mon, 12 Oct 2026 09:36:36 GMT",
+    "Cache-Control": "max-age=600",
+    "x-proxy-cache": "MISS",
+    "X-GitHub-Request-Id": "F8C8:3FF2D5:1BD50:20469:6ACCA7CC",
+    "x-github-edge-region": "westus3",
+    "Accept-Ranges": "bytes",
+    "Age": "0",
+    "Date": "Mon, 12 Oct 2026 09:26:36 GMT",
+    "Via": "1.1 varnish",
+    "X-Served-By": "cache-sjc10077-SJC",
+    "X-Cache": "MISS",
+    "X-Cache-Hits": "0",
+    "X-Timer": "S1791797197.581908,VS0,VE98",
+    "Vary": "Accept-Encoding",
+    "X-Fastly-Request-ID": "f82991c24990b99a33e1d9da34cf90bf83816154"
+  },
+  "sha256_uncompressed_response": "d3e309683ec00543480b55bbd109f5999338b0fd36e6164e3da9552c095b7a97",
+  "bytes": 1932590
+}
