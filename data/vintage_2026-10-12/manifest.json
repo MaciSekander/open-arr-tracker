@@ -1,0 +1,41 @@
+{
+  "vintage": "2026-10-12",
+  "requested": [
+    "2025-12-01",
+    "2026-10-11"
+  ],
+  "sources": {
+    "npm": {
+      "ok": true,
+      "result": 1890
+    },
+    "pypi": {
+      "ok": true,
+      "result": 374
+    },
+    "wikipedia": {
+      "ok": true,
+      "result": 942
+    },
+    "snapshots": {
+      "ok": true,
+      "result": {
+        "rows": 49,
+        "carried_forward_after_failure": {}
+      }
+    },
+    "ramp": {
+      "ok": true,
+      "result": {
+        "latest_token_date": "2026-09-29",
+        "latest_adoption_month": "2026-08-01",
+        "latest_week_end": "2026-09-27",
+        "rows": 9310
+      }
+    },
+    "tranco": {
+      "ok": true,
+      "result": "0 new weekly lists added to vintage_2026-10-07"
+    }
+  }
+}
