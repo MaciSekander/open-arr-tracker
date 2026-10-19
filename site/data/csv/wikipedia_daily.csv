@@ -314,6 +314,11 @@ date,article,views
 2026-10-09,ChatGPT,50429
 2026-10-10,ChatGPT,35215
 2026-10-11,ChatGPT,28298
+2026-10-12,ChatGPT,39823
+2026-10-13,ChatGPT,45423
+2026-10-14,ChatGPT,56162
+2026-10-15,ChatGPT,55448
+2026-10-16,ChatGPT,44509
 2025-12-01,Claude_(language_model),2616
 2025-12-02,Claude_(language_model),3061
 2025-12-03,Claude_(language_model),3593
@@ -629,6 +634,10 @@ date,article,views
 2026-10-09,Claude_(language_model),459
 2026-10-10,Claude_(language_model),385
 2026-10-11,Claude_(language_model),362
+2026-10-12,Claude_(language_model),500
+2026-10-13,Claude_(language_model),483
+2026-10-14,Claude_(language_model),500
+2026-10-15,Claude_(language_model),538
 2025-12-01,Claude_(AI),8
 2025-12-02,Claude_(AI),2
 2025-12-03,Claude_(AI),2
@@ -941,3 +950,7 @@ date,article,views
 2026-10-09,Claude_(AI),5308
 2026-10-10,Claude_(AI),4297
 2026-10-11,Claude_(AI),4412
+2026-10-12,Claude_(AI),5310
+2026-10-13,Claude_(AI),5592
+2026-10-14,Claude_(AI),6129
+2026-10-15,Claude_(AI),5592

@@ -1,0 +1,19 @@
+{
+  "url": "https://pypistats.org/api/packages/anthropic/overall?mirrors=false",
+  "retrieved_at_utc": "2026-10-19T09:18:35.999281+00:00",
+  "status": 200,
+  "headers": {
+    "Content-Length": "13834",
+    "Content-Type": "application/json",
+    "Date": "Mon, 19 Oct 2026 09:18:35 GMT",
+    "Retry-After": "1",
+    "Server": "gunicorn",
+    "Vary": "Cookie",
+    "X-Ratelimit-Limit": "60",
+    "X-Ratelimit-Remaining": "59",
+    "X-Ratelimit-Reset": "1792401517",
+    "Connection": "close"
+  },
+  "sha256_uncompressed_response": "9374d09eb26f4a9216418cde7d9a2ac032c4f2a35c29a5997a2cbf5179723295",
+  "bytes": 13834
+}
