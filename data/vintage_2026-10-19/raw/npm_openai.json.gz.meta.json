@@ -1,0 +1,25 @@
+{
+  "url": "https://api.npmjs.org/downloads/range/2025-12-01:2026-10-18/openai",
+  "retrieved_at_utc": "2026-10-19T09:18:14.060174+00:00",
+  "status": 200,
+  "headers": {
+    "Date": "Mon, 19 Oct 2026 09:18:14 GMT",
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": "13174",
+    "Connection": "close",
+    "CF-Ray": "a4ceb1b80e08e7f8-ORD",
+    "CF-Cache-Status": "MISS",
+    "Accept-Ranges": "bytes",
+    "Access-Control-Allow-Origin": "*",
+    "Cache-Control": "public, max-age=300",
+    "Expires": "Mon, 19 Oct 2026 09:23:14 GMT",
+    "Last-Modified": "Mon, 19 Oct 2026 09:18:14 GMT",
+    "Server": "cloudflare",
+    "access-control-allow-headers": "Authorization, Content-Type, If-None-Match",
+    "access-control-allow-methods": "GET, HEAD, POST, PUT, DELETE, OPTIONS",
+    "access-control-expose-headers": "WWW-Authenticate, Server-Authorization",
+    "request-id": "a4ceb1b80e08e7f8_3f23"
+  },
+  "sha256_uncompressed_response": "fd74224f35d5685978363cf6a974a6427452c94427c5539f95ae25c2479ef700",
+  "bytes": 13174
+}

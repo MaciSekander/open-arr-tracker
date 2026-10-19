@@ -1,21 +1,21 @@
 {
-  "vintage": "2026-10-12",
+  "vintage": "2026-10-19",
   "requested": [
     "2025-12-01",
-    "2026-10-11"
+    "2026-10-18"
   ],
   "sources": {
     "npm": {
       "ok": true,
-      "result": 1890
+      "result": 1932
     },
     "pypi": {
       "ok": true,
-      "result": 374
+      "result": 388
     },
     "wikipedia": {
       "ok": true,
-      "result": 942
+      "result": 955
     },
     "snapshots": {
       "ok": true,
@@ -27,15 +27,15 @@
     "ramp": {
       "ok": true,
       "result": {
-        "latest_token_date": "2026-09-29",
-        "latest_adoption_month": "2026-08-01",
-        "latest_week_end": "2026-09-27",
-        "rows": 9310
+        "latest_token_date": "2026-10-11",
+        "latest_adoption_month": "2026-09-01",
+        "latest_week_end": "2026-10-11",
+        "rows": 10379
       }
     },
     "tranco": {
       "ok": true,
-      "result": "0 new weekly lists added to vintage_2026-10-07"
+      "result": "1 new weekly lists added to vintage_2026-10-12"
     }
   }
 }
