@@ -11,6 +11,9 @@ permissions:
   contents: read
   pages: write
   id-token: write
+concurrency:  # Pages accepts one deployment at a time; queue instead of failing when a push and a weekly collection overlap
+  group: pages
+  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
