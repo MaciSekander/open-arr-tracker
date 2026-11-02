@@ -79,3 +79,11 @@ date,domain,rank,quality_flag,list_id,list_rows,window_start,window_end,provider
 2026-10-12,openai.com,110,observed,64VKX,1000000,2026-09-13,2026-10-12,crux|farsight|majestic|radar|umbrella
 2026-10-12,claude.ai,430,observed,64VKX,1000000,2026-09-13,2026-10-12,crux|farsight|majestic|radar|umbrella
 2026-10-12,anthropic.com,509,observed,64VKX,1000000,2026-09-13,2026-10-12,crux|farsight|majestic|radar|umbrella
+2026-10-19,chatgpt.com,109,observed,GQG5K,1000000,2026-09-20,2026-10-19,crux|farsight|majestic|radar|umbrella
+2026-10-19,openai.com,120,observed,GQG5K,1000000,2026-09-20,2026-10-19,crux|farsight|majestic|radar|umbrella
+2026-10-19,claude.ai,417,observed,GQG5K,1000000,2026-09-20,2026-10-19,crux|farsight|majestic|radar|umbrella
+2026-10-19,anthropic.com,441,observed,GQG5K,1000000,2026-09-20,2026-10-19,crux|farsight|majestic|radar|umbrella
+2026-10-26,chatgpt.com,114,observed,GQ3QK,1000000,2026-09-27,2026-10-26,crux|farsight|majestic|radar|umbrella
+2026-10-26,openai.com,130,observed,GQ3QK,1000000,2026-09-27,2026-10-26,crux|farsight|majestic|radar|umbrella
+2026-10-26,claude.ai,411,observed,GQ3QK,1000000,2026-09-27,2026-10-26,crux|farsight|majestic|radar|umbrella
+2026-10-26,anthropic.com,372,observed,GQ3QK,1000000,2026-09-27,2026-10-26,crux|farsight|majestic|radar|umbrella

@@ -1,0 +1,26 @@
+{
+  "url": "https://rss.marketingtools.apple.com/api/v2/de/apps/top-free/100/apps.json",
+  "retrieved_at_utc": "2026-11-02T19:16:01.449031+00:00",
+  "status": 200,
+  "headers": {
+    "Server": "Apple",
+    "Date": "Mon, 02 Nov 2026 19:16:01 GMT",
+    "Content-Type": "application/json; charset=utf-8",
+    "Transfer-Encoding": "chunked",
+    "Connection": "close",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-XSS-Protection": "1; mode=block",
+    "X-Content-Type-Options": "nosniff",
+    "X-Download-Options": "noopen",
+    "X-Permitted-Cross-Domain-Policies": "none",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "ETag": "W/\"711fe7929ebfb5fd1bbef84e6076ac01\"",
+    "Cache-Control": "max-age=0, private, must-revalidate",
+    "Content-Security-Policy": "base-uri 'self'; default-src 'self'; font-src 'self' data: https:; img-src 'self' data: https:; object-src 'none'; script-src 'self' 'nonce-Mj+/gCbJyur+KXqMLso6zQ=='; style-src 'self' https: 'nonce-Mj+/gCbJyur+KXqMLso6zQ=='",
+    "X-Request-Id": "3549a604-2842-4d4f-8aea-8c564b8e7cb7",
+    "X-Runtime": "0.592262",
+    "Strict-Transport-Security": "max-age=31536000; includeSubdomains"
+  },
+  "sha256_uncompressed_response": "711fe7929ebfb5fd1bbef84e6076ac01c36679132ccf56d28ce8e00f94185dfb",
+  "bytes": 53282
+}

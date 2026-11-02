@@ -1,0 +1,19 @@
+{
+  "url": "https://pypistats.org/api/packages/openai/overall?mirrors=false",
+  "retrieved_at_utc": "2026-11-02T19:14:41.999238+00:00",
+  "status": 200,
+  "headers": {
+    "Content-Length": "14966",
+    "Content-Type": "application/json",
+    "Date": "Mon, 02 Nov 2026 19:14:41 GMT",
+    "Retry-After": "0",
+    "Server": "gunicorn",
+    "Vary": "Cookie",
+    "X-Ratelimit-Limit": "60",
+    "X-Ratelimit-Remaining": "55",
+    "X-Ratelimit-Reset": "1793646882",
+    "Connection": "close"
+  },
+  "sha256_uncompressed_response": "39b3e56cabccfedb5e5fc1fef31917ee77b7808160ac65ad88e649bc2cf13719",
+  "bytes": 14966
+}

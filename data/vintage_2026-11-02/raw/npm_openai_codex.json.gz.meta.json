@@ -1,0 +1,25 @@
+{
+  "url": "https://api.npmjs.org/downloads/range/2025-12-01:2026-11-01/@openai/codex",
+  "retrieved_at_utc": "2026-11-02T19:14:41.606077+00:00",
+  "status": 200,
+  "headers": {
+    "Date": "Mon, 02 Nov 2026 19:14:41 GMT",
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": "13568",
+    "Connection": "close",
+    "CF-Ray": "a54576b07e522b95-LAX",
+    "CF-Cache-Status": "MISS",
+    "Accept-Ranges": "bytes",
+    "Access-Control-Allow-Origin": "*",
+    "Cache-Control": "public, max-age=300",
+    "Expires": "Mon, 02 Nov 2026 19:19:41 GMT",
+    "Last-Modified": "Mon, 02 Nov 2026 19:14:41 GMT",
+    "Server": "cloudflare",
+    "access-control-allow-headers": "Authorization, Content-Type, If-None-Match",
+    "access-control-allow-methods": "GET, HEAD, POST, PUT, DELETE, OPTIONS",
+    "access-control-expose-headers": "WWW-Authenticate, Server-Authorization",
+    "request-id": "a54576b07e522b95_f7f7"
+  },
+  "sha256_uncompressed_response": "91767488ffe4839d1b400dcfd58e222ae4eaea8c56fbb48dd1d87a9a2b932e00",
+  "bytes": 13568
+}

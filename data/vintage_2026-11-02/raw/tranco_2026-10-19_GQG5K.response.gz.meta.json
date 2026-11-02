@@ -1,0 +1,25 @@
+{
+  "url": "https://tranco-list.eu/download/GQG5K/1000000",
+  "retrieved_at_utc": "2026-11-02T19:16:54.043898+00:00",
+  "status": 200,
+  "headers": {
+    "Date": "Mon, 02 Nov 2026 19:16:48 GMT",
+    "Content-Type": "text/csv; charset=utf-8",
+    "Transfer-Encoding": "chunked",
+    "Connection": "close",
+    "Server": "cloudflare",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "Content-Disposition": "Attachment;filename=tranco_GQG5K.csv",
+    "Cache-Control": "public, max-age=86400",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=LLOPiTPfXmlReXWH2hqTdCUvpAk%2FwUSTszP8QUruP2OG6Sx%2FjHCJ3J%2FMfB7vq2IRURWnX8lxIoPdrUrKzPEIBtxY6EQoU94aI%2BvRrboC56%2Fd4tdaUFFSsXNIF%2FBN%2Bp7hCg%3D%3D\"}]}",
+    "X-Frame-Options": "DENY",
+    "vary": "accept-encoding",
+    "last-modified": "Mon, 02 Nov 2026 19:16:48 GMT",
+    "cf-cache-status": "EXPIRED",
+    "Server-Timing": "cfEdge;dur=1361,cfOrigin;dur=174",
+    "CF-RAY": "a54579beff29cb9f-LAX",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "sha256_uncompressed_response": "0f95af1f4fc6aee441a6567be50081f7675d469d9144ff7da433bf39e34f1b66",
+  "bytes": 22617650
+}
