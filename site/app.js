@@ -168,7 +168,6 @@ function tokens() {
   const why = D.meta.companies.map(co => { const w = T[co].why, d = w.headline_now - w.headline_then; return `<tr><td>${sw(co)} ${co}</td><td class="num">${usdM(w.headline_then)}</td><td class="num">${usdM(w.headline_now)}</td><td class="num">${signed(d, usdM)}</td><td class="num">${signed(w.headline_within, usdM)}</td><td class="num">${signed(w.headline_shift, usdM)}</td><td class="num">${w.new_models} of ${w.models_now}</td></tr>`; }).join('');
   const a = T.Anthropic, o = T.OpenAI, cached = t => t.types.find(r => r.type.startsWith('Cached'));
   const priceMove = t => { const dp = t.price.now / t.price.then - 1; return Math.abs(dp) < 0.03 ? 'the average price ended about where it started, so spend grew in step' : `the average price per token ${dp < 0 ? 'fell' : 'rose'} ${pct(Math.abs(dp) * 100, 0)}, so spend grew ${x(t.spend_week.then, t.spend_week.now).slice(1)} times`; };
-  const ratio = co => T[co].why.model_count_ratio;
 
   main.replaceChildren($(`
     <h1>Token economics</h1>
@@ -193,7 +192,7 @@ function tokens() {
     <h2>Which models earn the spend</h2>
     <p>Share of each lab's spend in the sample, four weeks to ${fmtDate(ms(a.models_period[1]))}.</p>
     <div class="grid2">${models}</div>
-    <p class="note">Ramp's per-model figures match each lab's total spend but count more tokens (${ratio('OpenAI') ? `${ratio('OpenAI').toFixed(1)}× for OpenAI and ${ratio('Anthropic').toFixed(1)}× for Anthropic in the latest four weeks` : 'by a varying amount'}), so per-model prices run below the average price above. Compare models with each other, not with the headline price.</p>
+    <p class="note">Ramp's per-model figures match each lab's total spend but have not always counted the same tokens as its lab totals; the gap varies over time and Ramp revises history. Per-model prices can therefore differ from the average price above, so compare models with each other rather than with the headline price.</p>
     <h2>Why the average price moved</h2>
     <p>Over the past quarter, split into two effects that add up exactly: the same models costing more or less per token, and usage shifting between models.</p>
     <div class="card tablewrap"><table>

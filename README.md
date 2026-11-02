@@ -45,23 +45,23 @@ python3 pipeline/serve.py 8000
 Requires Python 3.9+. `collect.py --only pypi` re-collects one source into an existing vintage (PyPI rate-limits).
 `--carry-tranco` keeps the previous vintage's sampled ranks and adds one new list per week.
 
-## Current state (vintage 2026-10-19, signals through 11 October)
+## Current state (vintage 2026-11-02, signals through 23 October)
 
 | | Run rate (likely range) | Part 1, publicly traceable | Part 2, residual | Year-end outlook |
 |---|---|---|---|---|
-| OpenAI | $73.0B ($55B to $97B) | $48.9B (28.0 to 63.8) | $24.1B (9.1 to 45.0) | $73B to $88B; $126B at the recent pace |
-| Anthropic | $124.4B ($108B to $143B) | $61.0B (49.8 to 72.2) | $63.5B (52.3 to 74.7) | $124B to $153B; $182B at the recent pace |
+| OpenAI | $74.7B ($55B to $101B) | $49.9B (28.4 to 65.3) | $24.7B (9.3 to 46.3) | $75B to $87B; $120B at the recent pace |
+| Anthropic | $128.5B ($112B to $148B) | $63.0B (51.4 to 74.5) | $65.6B (54.0 to 77.1) | $129B to $153B; $178B at the recent pace |
 
 - Latest reports: OpenAI about $70B (29 September), Anthropic more than $100B (18 September). Both are grade C.
 - Anthropic's split rests on 2025 figures Reuters reported from its IPO prospectus: subscriptions 17% of revenue,
   47% of sales through Amazon and Google.
 - OpenAI has not disclosed how business revenue divides, so its direct API share is a labelled placeholder.
 - Accuracy, predicting each report from the one before in real time: Anthropic misses averaged 12% over six reports
-  (trend line 18%, no change 33%). OpenAI's two-piece model missed 20% over two reports, against 49% as one business.
-- The likely range is the reference moved by the typical past miss (Anthropic ±15%, OpenAI ±33%). Checked by leaving
-  each report out, it held 4 of 6 Anthropic reports.
-- Token economics (Ramp sample, December to October): Anthropic tokens up 9.8x at a 46% lower billed price per token,
-  so spend up 5.3x. OpenAI tokens up 6.6x at a 13% lower price, spend up 5.7x.
+  (trend line 18%, no change 33%). OpenAI's two-piece model missed 21% over two reports, against 49% as one business.
+- The likely range is the reference moved by the typical past miss (Anthropic ±15%, OpenAI ±35%). Checked by leaving
+  each report out, it held 3 of 6 Anthropic reports and 1 of 2 OpenAI reports.
+- Token economics (Ramp sample, December to October, on Ramp's revised token counts): Anthropic tokens up 21x at a
+  59% lower billed price per token, so spend up 8.7x. OpenAI tokens up 8.2x at a 23% lower price, spend up 6.3x.
 - PyPI is collected but never measured across 24 August 2026, where both SDKs step down about 38%.
 
 ## Forecast checks
@@ -84,7 +84,10 @@ forward with the signals on its own. Two things still need a person: adding new 
 new disclosure changes them. If the weekly run fails, the manifest printed in its log names the source and the error.
 
 Ramp stopped embedding its token series in the AI Index page in late October 2026; the collector now falls back to
-the page's own `chart-data` endpoint and fails loudly if the fields it reads ever change.
+the page's own `chart-data` endpoint and fails loudly if the fields it reads ever change. The new feed also revised history:
+`all_tokens` now includes more cached tokens (Anthropic up to 1.8x, OpenAI 1.1x by October 2026, almost nothing in
+December 2025), so token growth in vintages from 2026-11-02 on is not comparable with earlier vintages. Output and
+fresh-input tokens did not change.
 
 ## Licence
 
