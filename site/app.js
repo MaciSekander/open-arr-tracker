@@ -165,8 +165,10 @@ function tokens() {
   const models = D.meta.companies.map(co => `<div class="card"><div class="co-head">${sw(co)}${co}</div>
       ${T[co].models.map(r => `<div class="cmp"><span>${esc(r.model)}</span><div class="cmp-track"><div style="width:${r.spend_share / T[co].models[0].spend_share * 100}%;background:${r.model.includes('other models') ? 'var(--axis)' : COLOR[co]}"></div></div><b>${share(r.spend_share)}</b></div>
         <div class="cmp-sub">${share(r.token_share)} of tokens · ${usdM(r.price)} per million</div>`).join('')}</div>`).join('');
-  const why = D.meta.companies.map(co => { const w = T[co].why, d = w.price_now - w.price_then; return `<tr><td>${sw(co)} ${co}</td><td class="num">${usdM(w.price_then)}</td><td class="num">${usdM(w.price_now)}</td><td class="num">${signed(d, usdM)}</td><td class="num">${signed(w.within, usdM)}</td><td class="num">${signed(w.shift, usdM)}</td><td class="num">${w.new_models} of ${w.models_now}</td></tr>`; }).join('');
+  const why = D.meta.companies.map(co => { const w = T[co].why, d = w.headline_now - w.headline_then; return `<tr><td>${sw(co)} ${co}</td><td class="num">${usdM(w.headline_then)}</td><td class="num">${usdM(w.headline_now)}</td><td class="num">${signed(d, usdM)}</td><td class="num">${signed(w.headline_within, usdM)}</td><td class="num">${signed(w.headline_shift, usdM)}</td><td class="num">${w.new_models} of ${w.models_now}</td></tr>`; }).join('');
   const a = T.Anthropic, o = T.OpenAI, cached = t => t.types.find(r => r.type.startsWith('Cached'));
+  const priceMove = t => { const dp = t.price.now / t.price.then - 1; return Math.abs(dp) < 0.03 ? 'the average price ended about where it started, so spend grew in step' : `the average price per token ${dp < 0 ? 'fell' : 'rose'} ${pct(Math.abs(dp) * 100, 0)}, so spend grew ${x(t.spend_week.then, t.spend_week.now).slice(1)} times`; };
+  const ratio = co => T[co].why.model_count_ratio;
 
   main.replaceChildren($(`
     <h1>Token economics</h1>
@@ -175,8 +177,8 @@ function tokens() {
     <p class="note">Change since ${fmtDate(ms(a.from))}. All figures on this page are Ramp's sample of its own business customers, not company totals. Prices are what was billed, so they include caching and discounts.</p>
     <h2>In short</h2>
     <ul class="plain">
-      <li><strong>Anthropic:</strong> customers in the sample use ${x(a.tokens_week.then, a.tokens_week.now).slice(1)} times the tokens they did in December, but the average price per token fell ${pct((1 - a.price.now / a.price.then) * 100, 0)}, so spend grew ${x(a.spend_week.then, a.spend_week.now).slice(1)} times.</li>
-      <li><strong>OpenAI:</strong> tokens grew ${x(o.tokens_week.then, o.tokens_week.now).slice(1)} times and the average price ended about where it started, so spend grew in step.</li>
+      <li><strong>Anthropic:</strong> customers in the sample use ${x(a.tokens_week.then, a.tokens_week.now).slice(1)} times the tokens they did in December, and ${priceMove(a)}.</li>
+      <li><strong>OpenAI:</strong> tokens grew ${x(o.tokens_week.then, o.tokens_week.now).slice(1)} times, and ${priceMove(o)}.</li>
       <li><strong>Caching dominates volume:</strong> ${share(cached(a).token_share)} of Anthropic's tokens and ${share(cached(o).token_share)} of OpenAI's are neither output nor fresh input, which is mostly cached input billed at a fraction of the fresh price. Token counts alone overstate how much work is being paid for.</li>
     </ul>
     <h2>Price per million tokens</h2>
@@ -191,12 +193,13 @@ function tokens() {
     <h2>Which models earn the spend</h2>
     <p>Share of each lab's spend in the sample, four weeks to ${fmtDate(ms(a.models_period[1]))}.</p>
     <div class="grid2">${models}</div>
+    <p class="note">Ramp's per-model figures match each lab's total spend but count more tokens (${ratio('OpenAI') ? `${ratio('OpenAI').toFixed(1)}× for OpenAI and ${ratio('Anthropic').toFixed(1)}× for Anthropic in the latest four weeks` : 'by a varying amount'}), so per-model prices run below the average price above. Compare models with each other, not with the headline price.</p>
     <h2>Why the average price moved</h2>
     <p>Over the past quarter, split into two effects that add up exactly: the same models costing more or less per token, and usage shifting between models.</p>
     <div class="card tablewrap"><table>
       <thead><tr><th>Company</th><th class="num">A quarter ago</th><th class="num">Now</th><th class="num">Change</th><th class="num">Same models repriced</th><th class="num">Shift between models</th><th class="num">New models</th></tr></thead>
       <tbody>${why}</tbody></table>
-      <p class="note">USD per million tokens. Compares the four weeks to ${fmtDate(ms(a.why.from))} with the four weeks to ${fmtDate(ms(a.why.to))}. A model's own billed price can rise without a list-price change, for example when less of its input is cached. A model seen in only one period counts entirely as a shift.</p></div>`));
+      <p class="note">USD per million tokens, the same average price as the top of this page. Compares the four weeks to ${fmtDate(ms(a.why.from))} with the four weeks to ${fmtDate(ms(a.why.to))}. The split between repricing and shifting comes from the per-model figures, which count tokens differently, so treat it as proportions rather than exact dollars. A model's own billed price can rise without a list-price change, for example when less of its input is cached. A model seen in only one period counts entirely as a shift.</p></div>`));
 
   for (const [id, key, fmt] of [['c-price', 'price_series', v => `$${v.toFixed(2)}`], ['c-cached', 'cached_series', v => `${Math.round(v)}%`]])
     lineChart(document.getElementById(id), { height: 260, fmt, label: id, series: D.meta.companies.map(co => ({ label: co, color: COLOR[co], points: T[co][key].map(([d, v]) => ({ t: ms(d), v })) })) });
@@ -295,24 +298,24 @@ function model() {
 function sources() {
   const live = D.sources.filter(s => s.status === 'live'), planned = D.sources.filter(s => s.status === 'planned');
   const anchorRows = D.anchors.slice().sort((a, b) => a.company.localeCompare(b.company) || ms(a.obs_date) - ms(b.obs_date)).map(a => `<tr>
-    <td>${a.id}</td><td>${sw(a.company)} ${a.company}</td><td>${esc(a.kind.replaceAll('_', ' '))}</td><td class="num">${qual(a)}</td><td>${esc(a.obs_label)}</td>
-    <td><span class="badge" title="${esc(D.grades[a.grade])}">${a.grade}</span></td>
-    <td><a href="${esc(a.url)}" rel="noopener">${esc(a.source)}</a>${a.excerpt ? `<br><span class="small">“${esc(a.excerpt)}”</span>` : ''}<br><span class="small">${esc(a.note)}</span></td></tr>`).join('');
+    <td class="lead">${a.id}</td><td data-label="Company">${sw(a.company)} ${a.company}</td><td data-label="Metric">${esc(a.kind.replaceAll('_', ' '))}</td><td class="num" data-label="Value">${qual(a)}</td><td data-label="Observed">${esc(a.obs_label)}</td>
+    <td data-label="Grade"><span class="badge" title="${esc(D.grades[a.grade])}">${a.grade}</span></td>
+    <td data-label="Source"><a href="${esc(a.url)}" rel="noopener">${esc(a.source)}</a>${a.excerpt ? `<br><span class="small">“${esc(a.excerpt)}”</span>` : ''}<br><span class="small">${esc(a.note)}</span></td></tr>`).join('');
   main.replaceChildren($(`
     <h1>Sources and how they connect</h1>
     <p class="lede">${live.length} public sources feed this site${planned.length ? `; ${planned.length} more are planned and contribute nothing yet` : ''}.</p>
-    <div class="card"><div id="graph"></div>
+    <div class="card"><p class="small phone-only">Swipe sideways to see segments and companies.</p><div id="graph"></div>
       <p class="note">Hover or tab to a node to trace what it informs. A link means the source speaks to that segment; it does not mean the segment is measured. Enterprise contracts and cloud resale have almost nothing pointing at them, which is why they are a residual.</p></div>
     <h2>Source catalogue</h2>
-    <div class="card tablewrap"><table>
+    <div class="card tablewrap"><table class="stack">
       <thead><tr><th>Source</th><th>Status</th><th>Measures</th><th>Blind spot</th><th>Access and cadence</th></tr></thead>
-      <tbody>${D.sources.map(s => `<tr><td>${s.url ? `<a href="${esc(s.url)}" rel="noopener">${esc(s.name)}</a>` : esc(s.name)}</td>
-        <td><span class="badge ${s.status}">${s.status === 'live' ? 'Collected' : 'Planned'}</span></td>
-        <td>${esc(s.measures)}</td><td>${esc(s.blind_spot)}</td><td>${esc(s.access)}<br><span class="small">${esc(s.cadence)}</span></td></tr>`).join('')}</tbody></table></div>
+      <tbody>${D.sources.map(s => `<tr><td class="lead">${s.url ? `<a href="${esc(s.url)}" rel="noopener">${esc(s.name)}</a>` : esc(s.name)}</td>
+        <td data-label="Status"><span class="badge ${s.status}">${s.status === 'live' ? 'Collected' : 'Planned'}</span></td>
+        <td data-label="Measures">${esc(s.measures)}</td><td data-label="Blind spot">${esc(s.blind_spot)}</td><td data-label="Access and cadence">${esc(s.access)}<br><span class="small">${esc(s.cadence)}</span></td></tr>`).join('')}</tbody></table></div>
     <h2>The evidence</h2>
     <p>Grades describe how the claim was read, not whether it is true: ${Object.entries(D.grades).map(([g, t]) => `<strong>${g}</strong> ${esc(t.toLowerCase())}`).join('; ')}.</p>
     <details open><summary>Reported run rates and revenue (${D.anchors.length})</summary>
-    <div class="card tablewrap"><table>
+    <div class="card tablewrap"><table class="stack">
       <thead><tr><th>ID</th><th>Company</th><th>Metric</th><th class="num">Value</th><th>Observed</th><th>Grade</th><th>Source, wording and caveat</th></tr></thead>
       <tbody>${anchorRows}</tbody></table></div></details>
     <details><summary>Published expectations (${D.forecasts.length})</summary>
@@ -332,45 +335,80 @@ function sources() {
 
 /* ---------- Method and data ---------- */
 function about() {
-  const files = ['npm_daily.csv', 'pypi_daily.csv', 'wikipedia_daily.csv', 'ramp_token_daily_7d.csv', 'ramp_adoption_monthly.csv', 'tranco_sampled.csv', 'snapshots.csv', 'manifest.json'];
+  const a = M('Anthropic'), o = M('OpenAI'), used = m => m.fit.methods.find(x => x.is_model);
+  const reports = co => totals(co).length, live = D.sources.filter(s => s.status === 'live').length;
+  const files = [
+    ['Registries', [
+      ['anchors.json', 'Every reported figure: exact wording, observation and publication dates, link and evidence grade.'],
+      ['sources.json', 'Each data source: what it measures, its blind spot, and whether it is collected yet.'],
+      ['model.json', 'Bounds for each revenue segment, which signals drive each company, and the disclosures behind them.'],
+      ['published.json', 'Cloud and gateway figures copied by hand from earnings releases. Context only.'],
+    ].map(([f, d]) => [`data/${f}`, f, d])],
+    ['Collected data, this snapshot', [
+      ['npm_daily.csv', 'Daily npm downloads of the official SDKs, Vercel AI SDK providers and coding CLIs.'],
+      ['pypi_daily.csv', 'Daily PyPI downloads of the Python SDKs, excluding mirrors.'],
+      ['ramp_token_daily_7d.csv', 'Ramp sample: tokens and billed cost per lab and token type, trailing seven days.'],
+      ['ramp_adoption_monthly.csv', 'Ramp sample: share of businesses paying each vendor, by month.'],
+      ['wikipedia_daily.csv', 'Daily English Wikipedia views of the ChatGPT and Claude articles.'],
+      ['tranco_sampled.csv', 'Tranco popularity rank of each lab\'s consumer domain.'],
+      ['snapshots.csv', 'Point-in-time counts: Homebrew, Open VSX, GitHub stars, App Store, OpenRouter and Vercel.'],
+      ['manifest.json', 'What this run collected, from where, and any source that failed and was carried forward.'],
+    ].map(([f, d]) => [`data/csv/${f}`, f, d])],
+    ['Built output', [['data/site.json', 'site.json', 'Every number and chart on this site, computed from the files above.']]],
+  ];
+  const fileRows = files.map(([group, rows]) => `<tr class="part"><td colspan="2">${group}</td></tr>` +
+    rows.map(([href, name, desc]) => `<tr><td class="lead"><a href="${href}">${name}</a></td><td>${esc(desc)}</td></tr>`).join('')).join('');
+
   main.replaceChildren($(`
     <h1>Method and data</h1>
-    <p class="lede">Everything on this site is generated from four registry files and one dated data snapshot. Nothing is hand-edited after the build.</p>
-    <h2>Method</h2>
+    <p class="lede">How each estimate is made, what it cannot tell you, and where every number comes from. Everything is generated from four registry files and one dated data snapshot; nothing is edited by hand after the build.</p>
+    <div class="facts">
+      <div><b>${fmtDate(ms(D.meta.vintage))}</b><span>Latest data collection. A new one runs every Monday.</span></div>
+      <div><b>${reports('Anthropic') + reports('OpenAI')}</b><span>Reported run rates on file: ${reports('Anthropic')} Anthropic, ${reports('OpenAI')} OpenAI.</span></div>
+      <div><b>${live}</b><span>Public sources collected. No paid data, no private records.</span></div>
+    </div>
+
+    <h2>How an estimate is made</h2>
+    <ol class="method">
+      <li><b>Record what the companies have said.</b> Each reported run rate is logged once, with its exact wording, the date it describes, the date it was published and an evidence grade. Published forecasts are kept apart and never used in the maths.</li>
+      <li><b>Collect public usage data.</b> SDK downloads, Ramp's token and spend sample, and the other sources on the Sources page. Each raw response is saved with its address, time and a fingerprint so it can be checked later.</li>
+      <li><b>Move the latest report forward.</b> Compare each signal's ${D.model.window_days}-day average now with its average on the day of the latest report, take the middle (median) growth, and apply it to the report.
+        <code class="formula">run rate now = latest report × (median signal growth)<sup>elasticity</sup></code>
+        The elasticity says how strongly revenue has followed the signals in the past. Fitted on Anthropic's reports it is ${a.elasticity.toFixed(2)}, almost one for one. OpenAI has too few reports to fit its own, so only its business revenue moves, with Anthropic's elasticity; its consumer revenue is held at the last reported level, because no public signal tracks paid subscriptions.</li>
+      <li><b>Put a range around it.</b> The low and high figures are the estimate moved up and down by the size of a typical past miss: ±${pct(a.band.half_width_pct, 0)} for Anthropic and ±${pct(o.band.half_width_pct, 0)} for OpenAI. If the latest report says "more than", the low end never goes below it.</li>
+      <li><b>Split the total.</b> Subscriptions, advertising and direct API are each bounded by a cited disclosure, and the default is the middle of the bounds. That is Part 1. Part 2, enterprise contracts and cloud resale, is whatever remains.</li>
+      <li><b>Test it against history.</b> Each past report is predicted from the one before, using only what was known at the time. Anthropic's typical miss is ${pct(used(a).mape, 0)} over ${used(a).n} reports; OpenAI's is ${pct(used(o).mape, 0)} over ${used(o).n}. Every miss is shown on the <a href="#model">Model</a> page.</li>
+    </ol>
+
+    <h2>What it cannot tell you</h2>
     <ul class="plain">
-      <li><strong>Register reports.</strong> One entry per disclosure with its exact wording, observation date, publication date and an evidence grade. Published forecasts are kept separately and never used to fit anything.</li>
-      <li><strong>Collect signals.</strong> Raw responses are saved with URL, timestamp and hash, then reduced to the series under Signals.</li>
-      <li><strong>Total.</strong> Latest report × (median signal growth since that report) ^ elasticity. Growth compares ${D.model.window_days}-day averages. Elasticity is fitted on Anthropic's consecutive reports. OpenAI has too few reports to fit its own, so its business piece borrows that elasticity and its consumer piece is held at the last reported level.</li>
-      <li><strong>Range.</strong> Low and high are the reference × e<sup>±r</sup>, where r is the root-mean-square log miss of the method over past reports: about a one-standard-error band. When the latest report is a "more than" figure, the low end never falls below it.</li>
-      <li><strong>Split.</strong> Part 1 segments take the midpoint of bounds set by cited disclosures. Part 2 is the remainder.</li>
-      <li><strong>Token economics.</strong> From Ramp's sample: spend divided by tokens gives the billed price per million tokens, by lab, token type and model. The quarterly price change is split exactly into repricing of the same models and shifts between models.</li>
-      <li><strong>Check.</strong> Every report is predicted from the previous one in real time, using only what came before it, and all misses are published.</li>
+      <li><strong>The split is bounded, not measured.</strong> Anthropic's rests on 2025 figures reported from its IPO filing. OpenAI has disclosed far less, so its direct API share is a labelled placeholder.</li>
+      <li><strong>Signals follow developers.</strong> They have tracked Anthropic's run rate closely and OpenAI's poorly, because much of OpenAI's revenue is consumer subscriptions.</li>
+      <li><strong>Few data points.</strong> The elasticity rests on ${used(a).n} Anthropic reports, and OpenAI's model has been tested on ${used(o).n}.</li>
+      <li><strong>Reports are unaudited</strong> and are often thresholds ("more than $100B"). The two companies may count cloud-partner revenue differently, so their totals are not strictly comparable.</li>
+      <li><strong>Sources change.</strong> History is each source's latest published version and can be revised. A series with a known counting break is never measured across it.</li>
     </ul>
-    <h2>Known limits</h2>
-    <ul class="plain">
-      <li>The split is bounded, not measured. Anthropic's rests on 2025 figures reported from its IPO filing. OpenAI has disclosed far less, so its direct API default is a placeholder.</li>
-      <li>Signals measure developer activity. That has tracked Anthropic's run rate closely and OpenAI's poorly.</li>
-      <li>The elasticity rests on six Anthropic reports. OpenAI's two-piece model has been tested on only two.</li>
-      <li>Reports are unaudited and often thresholds. Anthropic's cloud partners keep a fee on sales made through them, and the two companies may present partner revenue differently, so their totals are not strictly comparable.</li>
-      <li>A series with a known counting break is never measured across it.</li>
-      <li>Data was collected ${fmtDate(ms(D.meta.vintage))}. Cloud and gateway figures are transcribed by hand from published reports.</li>
-    </ul>
+
     <h2>Terms</h2>
-    <ul class="plain">
-      <li><strong>Run rate (ARR).</strong> A recent period's revenue scaled to twelve months. A $100B run rate means roughly $8.3B in the latest month, not $100B earned this year.</li>
-      <li><strong>Publicly traceable.</strong> Revenue from products whose use shows up in open data: subscriptions, advertising and direct API. Traceable does not mean measured in dollars.</li>
-      <li><strong>Residual.</strong> Total minus the traceable part: what enterprise contracts and cloud resale must add up to.</li>
-      <li><strong>Elasticity.</strong> How much run rate has moved for each 1% move in the signals. 1.0 means one for one.</li>
-      <li><strong>Evidence grade.</strong> How a claim was read: A company statement, B original journalism, C republication, D not verified on a source page.</li>
-    </ul>
-    <h2>Download</h2>
-    <p>Registries: <a href="data/anchors.json">anchors.json</a>, <a href="data/sources.json">sources.json</a>, <a href="data/model.json">model.json</a>, <a href="data/published.json">published.json</a>. Everything the charts use: <a href="data/site.json">site.json</a>.</p>
-    <p>Collected files: ${files.map(f => `<a href="data/csv/${f}">${f}</a>`).join(', ')}.</p>
-    <h2>Reproduce and contribute</h2>
+    <dl class="defs">
+      <dt>Run rate (ARR)</dt><dd>A recent period's revenue scaled to a year. A $100B run rate means roughly $8.3B in the latest month, not $100B earned this year.</dd>
+      <dt>Publicly traceable</dt><dd>Revenue from products whose use shows up in open data: subscriptions, advertising and direct API. Traceable does not mean measured in dollars.</dd>
+      <dt>Residual</dt><dd>The total minus the traceable part: what enterprise contracts and cloud resale must add up to.</dd>
+      <dt>Elasticity</dt><dd>How much run rate has moved for each 1% move in the signals. 1.0 means one for one.</dd>
+      <dt>Typical miss</dt><dd>The average size of the error when past reports were predicted, ignoring direction.</dd>
+      <dt>Evidence grade</dt><dd>How a claim was read, not whether it is true: ${Object.entries(D.grades).map(([g, t]) => `<b>${g}</b> ${esc(t.toLowerCase())}`).join('; ')}.</dd>
+    </dl>
+
+    <h2>Download the data</h2>
+    <div class="card tablewrap"><table class="stack files"><tbody>${fileRows}</tbody></table>
+      <p class="note">Ramp's per-model file is too large for the site and stays in the <a href="https://github.com/MaciSekander/open-arr-tracker/tree/main/data" rel="noopener">repository</a>, with every earlier snapshot.</p></div>
+
+    <h2>Run it yourself</h2>
     <pre>python3 pipeline/collect.py --end YYYY-MM-DD --carry-tranco data/vintage_PREVIOUS
+python3 -m unittest discover tests
 python3 pipeline/build.py
 python3 pipeline/serve.py 8000</pre>
-    <p>Python standard library only; the site has no build step and no dependencies. To add a source, add an entry to <code>registry/sources.json</code> and a collector step in <code>pipeline/collect.py</code>. To add or correct a disclosure, edit <code>registry/anchors.json</code> with the exact wording and a link.</p>`));
+    <p>Python 3.9 or later and its standard library only; the site has no build step. To correct a figure or add a source, see the <a href="https://github.com/MaciSekander/open-arr-tracker/blob/main/CONTRIBUTING.md" rel="noopener">contributing guide</a>.</p>`));
 }
 
 const routes = { overview, signals, tokens, model, sources, about };

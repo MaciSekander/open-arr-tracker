@@ -390,6 +390,13 @@ def build_tokens(v):
         p_then = sum(m['token_spend'] for m in then.values()) / vt * 1e6
         p_now = sum(m['token_spend'] for m in now.values()) / vn * 1e6
         assert abs((p_now - p_then) - (within + shift)) < 1e-6, 'price decomposition must add up'
+        # Ramp's per-model file matches the lab totals on spend but counts more tokens, and the gap moves over time, so
+        # per-model prices sit on their own basis. The headline change uses the lab totals; the per-model data only
+        # supplies how that change splits between repricing and shifting models.
+        lab_price = dict(usable)
+        h_then, h_now = (price(lab_price[D(ends[-14])]) if D(ends[-14]) in lab_price else None), price(last)
+        split = within / (within + shift) if within + shift else 0.5
+        count_ratio = vn / lab_price[D(ends[-1])]['all_tokens'][0] if D(ends[-1]) in lab_price else None
 
         out[company] = {
             'from': str(d0), 'to': str(d1),
@@ -400,7 +407,10 @@ def build_tokens(v):
             'cached_series': [[str(d), round(100 * t['cached'][0] / t['all_tokens'][0], 2)] for d, t in usable],
             'types': types, 'models': mix, 'models_period': [ends[-4], ends[-1]],
             'why': {'from': then and ends[-14], 'to': ends[-1], 'price_then': p_then, 'price_now': p_now, 'within': within, 'shift': shift,
-                    'models_then': len(then), 'models_now': len(now), 'new_models': len(set(now) - set(then))},
+                    'models_then': len(then), 'models_now': len(now), 'new_models': len(set(now) - set(then)),
+                    'headline_then': h_then, 'headline_now': h_now,
+                    'headline_within': h_then and (h_now - h_then) * split, 'headline_shift': h_then and (h_now - h_then) * (1 - split),
+                    'model_count_ratio': count_ratio},
         }
     return out
 

@@ -133,6 +133,20 @@ code { font-size: .92em; }
 .foot { margin-top: 80px; padding-top: 20px; padding-bottom: 40px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
 @media (max-width: 560px) { .tiles { grid-template-columns: 1fr; } .card { padding: 18px; } h1 { margin-top: 36px; } h2 { margin-top: 48px; } .vintage { margin-left: 0; } }
 
+.phone-only { display: none; }
+@media (max-width: 560px) {
+  .phone-only { display: block; margin: 0 0 8px; }
+  /* Wide reference tables become one card per row on phones. */
+  table.stack thead { display: none; }
+  table.stack, table.stack tbody, table.stack tr, table.stack td { display: block; width: 100%; }
+  table.stack tr { padding: 14px 0; border-bottom: 1px solid var(--border); }
+  table.stack tr:last-child { border-bottom: 0; }
+  table.stack td { border: 0; padding: 3px 0; }
+  table.stack td.num { text-align: left; }
+  table.stack td.lead { font-weight: 600; font-size: 15px; padding-bottom: 6px; }
+  table.stack td[data-label]::before { content: attr(data-label); display: block; font-size: 12px; color: var(--muted); margin-top: 4px; }
+}
+
 #builders th, #builders td { padding: 9px 7px; }
 #builders input[type=number] { width: 84px; }
 
@@ -148,3 +162,18 @@ code { font-size: .92em; }
 .eq span { font-size: 12.5px; color: var(--ink-2); }
 .eq i { font-style: normal; font-size: 20px; color: var(--muted); }
 .cmp-sub { font-size: 12.5px; color: var(--muted); margin: -6px 0 12px; }
+
+/* Method and data */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 16px; margin: 0 0 8px; }
+.facts > div { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.facts b { display: block; font-size: 22px; font-weight: 650; letter-spacing: -.01em; }
+.facts span { display: block; font-size: 13.5px; color: var(--ink-2); line-height: 1.45; margin-top: 2px; }
+ol.method { padding-left: 22px; margin: 0 0 14px; max-width: 70ch; }
+ol.method li { margin-bottom: 14px; line-height: 1.6; padding-left: 4px; }
+ol.method li b { display: block; }
+.formula { display: block; width: fit-content; max-width: 100%; margin: 10px 0; padding: 8px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 13.5px; white-space: normal; }
+dl.defs { display: grid; grid-template-columns: minmax(130px, 11em) 1fr; gap: 10px 20px; max-width: 76ch; margin: 0 0 14px; }
+dl.defs dt { font-weight: 600; }
+dl.defs dd { margin: 0; color: var(--ink-2); line-height: 1.55; }
+table.files td.lead { white-space: nowrap; }
+@media (max-width: 560px) { dl.defs { grid-template-columns: 1fr; gap: 2px; } dl.defs dd { margin-bottom: 10px; } table.files td.lead { white-space: normal; } }
