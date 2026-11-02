@@ -173,6 +173,7 @@ class Model:
 
     @staticmethod
     def _beta(pairs):
+        """Elasticity: least squares through the origin of log report growth on log signal growth. 1.0 (one for one) with no history."""
         sxx = sum(p['x'] ** 2 for p in pairs)
         return sum(p['x'] * p['y'] for p in pairs) / sxx if sxx else 1.0
 
@@ -183,25 +184,32 @@ class Model:
         donor = next(c for c in COMPANIES if 'two_piece' not in self.cfg['companies'][c])
         return {'share': tp['business_share'], 'beta': self.fit[donor]['elasticity'], 'donor': donor}
 
-    def roll(self, company, base, ratio, beta):
-        """Run rate implied by a signal ratio since report `base`. Two-piece: only the business share moves."""
+    def donor_beta_before(self, company, date):
+        """The donor's elasticity using only donor reports dated before `date`, so a backtest never borrows from the future."""
+        tp = self.two_piece(company)
+        return self._beta([p for p in self.fit[tp['donor']]['pairs'] if p['date'] < date])
+
+    def roll(self, company, base, ratio, beta, donor_beta=None):
+        """Run rate implied by a signal ratio since report `base`. Two-piece: only the business share moves, with the donor's elasticity."""
         tp = self.two_piece(company)
         if tp and base['id'] in tp['share']:
             b = base['value_b'] * tp['share'][base['id']]
-            return base['value_b'] - b + b * ratio ** tp['beta']
+            return base['value_b'] - b + b * ratio ** (tp['beta'] if donor_beta is None else donor_beta)
         return base['value_b'] * ratio ** beta
 
     def _fit(self, company):
+        """Backtest every report against the one before it. Every method is real time: the fitted elasticity for a report
+        uses only earlier reports (one for one when there are none), as it would have been when that report was due."""
         pairs = self._pairs(company)
         beta = self._beta(pairs)
         tp, by_id = self.two_piece(company), {a['id']: a for a in self.hist[company]}
-        for i, p in enumerate(pairs):
-            rest = pairs[:i] + pairs[i + 1:]
-            p['loo_beta'] = self._beta(rest) if rest else None
+        for p in pairs:
+            p['rt_beta'] = self._beta([q for q in pairs if q['date'] < p['date']])
             p['pred'] = {'Carry forward': p['prev_b'], 'Prior trend': p['trend_b'], 'Signals, one for one': p['prev_b'] * p['signal_ratio'],
-                         'Signals, fitted': p['prev_b'] * p['signal_ratio'] ** p['loo_beta'] if p['loo_beta'] is not None else None}
+                         'Signals, fitted': p['prev_b'] * p['signal_ratio'] ** p['rt_beta']}
             if tp:
-                p['pred']['Two pieces'] = self.roll(company, by_id[p['from']], p['signal_ratio'], beta) if p['from'] in tp['share'] else None
+                p['pred']['Two pieces'] = (self.roll(company, by_id[p['from']], p['signal_ratio'], beta, self.donor_beta_before(company, p['date']))
+                                           if p['from'] in tp['share'] else None)
             p['model_b'] = p['pred']['Two pieces' if tp else 'Signals, fitted']
         names = ['Carry forward', 'Prior trend', 'Signals, one for one', 'Signals, fitted'] + (['Two pieces'] if tp else [])
         methods = []
@@ -209,8 +217,25 @@ class Model:
             rows = [p for p in pairs if p['pred'][name] is not None]
             if rows:
                 err = [(p['pred'][name] / p['actual_b'] - 1) * 100 for p in rows]
-                methods.append({'method': name, 'n': len(rows), 'mape': statistics.mean(abs(e) for e in err), 'bias_pct': statistics.mean(err), 'is_model': name == ('Two pieces' if tp else 'Signals, fitted')})
-        return {'elasticity': tp['beta'] if tp else beta, 'own_elasticity': beta, 'pairs': pairs, 'methods': methods}
+                log_err = [math.log(p['actual_b'] / p['pred'][name]) for p in rows]
+                methods.append({'method': name, 'n': len(rows), 'mape': statistics.mean(abs(e) for e in err), 'bias_pct': statistics.mean(err),
+                                'rmse_log': math.sqrt(statistics.mean(e * e for e in log_err)), 'is_model': name == ('Two pieces' if tp else 'Signals, fitted')})
+        model = next(m for m in methods if m['is_model'])
+        return {'elasticity': tp['beta'] if tp else beta, 'own_elasticity': beta, 'pairs': pairs, 'methods': methods,
+                'band': self._band([p for p in pairs if p['model_b'] is not None], model['rmse_log'])}
+
+    @staticmethod
+    def _band(rows, rmse):
+        """Range = reference x exp(+/- the root-mean-square log miss of past reports), roughly a one-standard-error band.
+        Its honesty check is leave-one-out: each past report is tested against a band sized without it."""
+        log_err = [math.log(p['actual_b'] / p['model_b']) for p in rows]
+        inside = 0
+        for i, (p, e) in enumerate(zip(rows, log_err)):
+            rest = log_err[:i] + log_err[i + 1:]
+            if rest and abs(e) <= math.sqrt(statistics.mean(x * x for x in rest)):
+                inside += 1
+            p['band_b'] = [p['model_b'] * math.exp(-rmse), p['model_b'] * math.exp(rmse)]
+        return {'rmse_log': rmse, 'half_width_pct': (math.exp(rmse) - 1) * 100, 'inside': inside, 'n': len(rows) if len(rows) > 1 else 0}
 
     def bounds(self, spec, total):
         v = lambda x: x['b'] if 'b' in x else x['share'] * total
@@ -226,10 +251,17 @@ class Model:
             used = [{'signal': s['id'], 'title': s['title'], 'label': s['labels'][company], 'growth': g} for s, g in self.ratios(company, d0, end)]
         if len(used) >= self.cfg['min_signals']:
             vals = [u['growth'] for u in used]
-            now = {k: self.roll(company, latest, f(vals), beta) for k, f in [('low', min), ('reference', statistics.median), ('high', max)]}
+            ref = self.roll(company, latest, statistics.median(vals), beta)
+            signal_range = {'low': self.roll(company, latest, min(vals), beta), 'high': self.roll(company, latest, max(vals), beta)}
             as_of, rolled = end, True
         else:
-            now, as_of, rolled = {k: float(latest['value_b']) for k in CASES}, d0, False
+            ref, signal_range, as_of, rolled = float(latest['value_b']), None, d0, False
+        # Low and high come from how far this method has missed past reports, not from the spread between signals:
+        # the spread contained only a third of past reports. Floored at the reported figure when it is a "more than".
+        band = fit['band']
+        now = {'low': ref * math.exp(-band['rmse_log']), 'reference': ref, 'high': ref * math.exp(band['rmse_log'])}
+        if latest['qualifier'] == '>':
+            now['low'] = max(now['low'], float(latest['value_b']))
         total = now['reference']
 
         rows, seg_name = [], {s['id']: s['name'] for s in self.cfg['segments']}
@@ -259,15 +291,20 @@ class Model:
             if r:
                 curve.append([str(day), round(self.roll(company, base, r, beta), 2)])
             day += dt.timedelta(days=7)
+        if rolled and (not curve or curve[-1][0] != str(as_of)):  # the weekly steps rarely land on the nowcast date; end the line at the headline figure
+            curve.append([str(as_of), round(total, 2)])
 
-        # Outlook: no compounding. Either growth stops, or the company keeps adding the dollars per month it averaged across its 2026 reports.
+        # Outlook: no compounding. Growth stops; the company keeps adding the dollars per month it averaged across its 2026 reports;
+        # or it keeps the pace between its last two reports.
         target = D(self.cfg['outlook_target'])
-        per_month = (h[-1]['value_b'] - h[0]['value_b']) / (D(h[-1]['obs_date']) - D(h[0]['obs_date'])).days * 30.4375
+        pace = lambda a, b: (b['value_b'] - a['value_b']) / (D(b['obs_date']) - D(a['obs_date'])).days * 30.4375
+        per_month, recent = pace(h[0], h[-1]), pace(h[-2], h[-1])
         months = (target - as_of).days / 30.4375
         outlook = {'target': str(target), 'months': months, 'added_per_month_b': per_month, 'first': {'id': h[0]['id'], 'value_b': h[0]['value_b'], 'obs_date': h[0]['obs_date']},
-                   'flat_b': total, 'steady_b': total + per_month * months}
+                   'recent_per_month_b': recent, 'recent_from': {'id': h[-2]['id'], 'value_b': h[-2]['value_b'], 'obs_date': h[-2]['obs_date']},
+                   'flat_b': total, 'steady_b': total + per_month * months, 'recent_b': total + recent * months}
         return {'latest': {'id': latest['id'], 'value_b': latest['value_b'], 'qualifier': latest['qualifier'], 'obs_date': latest['obs_date']},
-                'nowcast': now, 'as_of': str(as_of), 'rolled_forward': rolled, 'signals': used, 'elasticity': fit['elasticity'], 'fit': fit,
+                'nowcast': now, 'signal_range': signal_range, 'band': band, 'as_of': str(as_of), 'rolled_forward': rolled, 'signals': used, 'elasticity': fit['elasticity'], 'fit': fit,
                 'two_piece': ({'business_share': tp['share'][latest['id']], 'donor': tp['donor'], 'basis': cfg['two_piece']['basis'], 'cites': cfg['two_piece']['cites']} if tp else None),
                 'rows': rows, 'public': public, 'residual': residual, 'curve': curve, 'outlook': outlook}
 
@@ -420,7 +457,8 @@ def main():
         shutil.copy(ROOT / 'registry' / f'{n}.json', out / f'{n}.json')
     r1 = lambda d: {k: round(x, 1) for k, x in d.items()}
     print(json.dumps({'vintage': vintage, 'companies': {c: {
-        'latest': x['latest'], 'as_of': x['as_of'], 'rolled': x['rolled_forward'], 'elasticity': round(x['elasticity'], 3), 'nowcast': r1(x['nowcast']),
+        'latest': x['latest'], 'as_of': x['as_of'], 'rolled': x['rolled_forward'], 'elasticity': round(x['elasticity'], 3), 'nowcast': r1(x['nowcast']), 'signal_range': x['signal_range'] and r1(x['signal_range']),
+        'band': {'half_width_pct': round(x['band']['half_width_pct'], 1), 'inside': f"{x['band']['inside']} of {x['band']['n']}"},
         'signals': [(u['signal'], round(u['growth'], 3)) for u in x['signals']], 'public': r1(x['public']), 'residual': r1(x['residual']),
         'rows': {r['segment']: r1(r['est']) for r in x['rows']},
         'methods': [(q['method'], q['n'], round(q['mape'], 1), round(q['bias_pct'], 1)) for q in x['fit']['methods']],

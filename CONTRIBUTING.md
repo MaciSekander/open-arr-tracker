@@ -28,7 +28,8 @@ Do not add growth assumptions: totals move only with reports and fitted signals,
 ## Before opening a pull request
 
 ```bash
+python3 -m unittest discover tests
 python3 pipeline/build.py
 ```
 
-It must pass, and the site must load with no console errors.
+Both must pass, and the site must load with no console errors.

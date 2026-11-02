@@ -23,6 +23,26 @@ def extract(html, key):
         raise ValueError('Empty source array')
     return result
 
+PAGE = 'https://ramp.com/data/ai-index'
+CHART_DATA = PAGE + '/chart-data/'  # since late October 2026 the token series load from here instead of the page
+REQUIRED = {'tokenPrices': {'usage_date', 'model_maker', 'token_type', 'token_count_7d', 'token_cost_usd_7d'},
+            'tokenVolumes': {'period_start', 'period_end', 'model_maker', 'series_label', 'metric_key', 'metric_value'},
+            'adoptionVendor': {'date_month', 'vendor', 'adoption_rate_pct'}}
+
+def load(html, key, raw_dir):
+    """One source array: embedded in the page if it is there, otherwise from Ramp's chart-data endpoint.
+    Returns (rows, where it came from). Checks the fields the pipeline reads, so a format change fails loudly."""
+    try:
+        rows, origin = extract(html, key), 'page'
+    except ValueError:
+        rows, origin = json.loads(fetch(CHART_DATA + key, raw_dir / f'ramp_{key}.json.gz')), 'chart-data'
+        if not isinstance(rows, list) or not rows:
+            raise ValueError(f'Empty source array: {key}')
+    missing = REQUIRED.get(key, set()) - set(rows[0])
+    if missing:
+        raise ValueError(f'{key}: missing fields {sorted(missing)}')
+    return rows, origin
+
 def write(path, rows):
     with path.open('w', newline='') as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
@@ -36,8 +56,8 @@ if __name__ == '__main__':
         body = gzip.decompress(Path(a.input).read_bytes())
     else:
         stamp = dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
-        body = fetch('https://ramp.com/data/ai-index', root/'raw'/f'ramp_{stamp}.html.gz')
-    arrays = {k: extract(body.decode(), k) for k in ['tokenPrices','tokenVolumes','adoptionVendor']}
+        body = fetch(PAGE, root/'raw'/f'ramp_{stamp}.html.gz')
+    arrays = {k: load(body.decode(), k, root/'raw')[0] for k in ['tokenPrices','tokenVolumes','adoptionVendor']}
     for key, rows in arrays.items():
         (root / (key+'_full.json')).write_text(json.dumps(rows, indent=2))
     daily = [r for r in arrays['tokenPrices'] if a.start <= r['usage_date'] <= a.end and r['model_maker'] in ['openai','anthropic']]

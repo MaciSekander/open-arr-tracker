@@ -35,12 +35,14 @@ function overview() {
   const cards = D.meta.companies.map(co => {
     const m = M(co), l = m.latest, t = m.nowcast.reference, res = m.rows.find(r => r.part === 'residual'), fitted = m.fit.methods.find(x => x.is_model);
     const how = m.rolled_forward
-      ? `Latest report ${rq(l)} on ${fmtDate(ms(l.obs_date))}, moved forward ${Math.round((ms(m.as_of) - ms(l.obs_date)) / 864e5)} days with ${m.signals.length} signals (${usd(m.nowcast.low, 0)} to ${usd(m.nowcast.high, 0)}).`
+      ? `Latest report ${rq(l)} on ${fmtDate(ms(l.obs_date))}, moved forward ${Math.round((ms(m.as_of) - ms(l.obs_date)) / 864e5)} days with ${m.signals.length} signals.`
       : `Latest report ${rq(l)} on ${fmtDate(ms(l.obs_date))}. No newer signal data yet.`;
+    const b = m.band, check = b.n ? ` Ranges sized this way held ${b.inside} of ${b.n} past reports.` : '';
     return `<div class="card">
       <div class="co-head">${sw(co)}${co}</div>
       <div class="tile"><div class="label">Annualized run rate, ${fmtDate(ms(m.as_of))}</div><div class="value hero">${usd(m.nowcast.reference)}</div>
-        <div class="sub">${how}<br>Typical miss of this method: ${pct(fitted.mape, 0)}, over ${fitted.n} past reports.</div></div>
+        <div class="range">Likely range ${usd(m.nowcast.low, 0)} to ${usd(m.nowcast.high, 0)}</div>
+        <div class="sub">${how}<br>Typical miss of this method: ${pct(fitted.mape, 0)}, over ${fitted.n} past reports. The range is ±${pct(b.half_width_pct, 0)}, the size of a typical past miss.${check}</div></div>
       ${splitBar(co)}
       <div class="tiles" style="margin-top:12px">
         <div class="tile"><div class="label">Part 1 · Publicly traceable</div><div class="value">${pct(m.public.reference / t * 100, 0)} <span class="unit">of run rate</span></div>
@@ -54,7 +56,7 @@ function overview() {
   const target = fmtDate(ms(M('OpenAI').outlook.target));
   const outlook = D.meta.companies.map(co => {
     const o = M(co).outlook, pub = D.forecasts.filter(f => f.company === co);
-    return `<tr><td>${sw(co)} ${co}</td><td class="num">${usd(o.flat_b, 0)}</td><td class="num">${usd(o.steady_b, 0)}</td><td class="num">${usd(o.added_per_month_b)}</td>
+    return `<tr><td>${sw(co)} ${co}</td><td class="num">${usd(o.flat_b, 0)}</td><td class="num">${usd(o.steady_b, 0)} <span class="small">(+${usd(o.added_per_month_b)}/mo)</span></td><td class="num">${usd(o.recent_b, 0)} <span class="small">(+${usd(o.recent_per_month_b)}/mo)</span></td>
       <td>${pub.length ? pub.map(f => `${fc(f)} <span class="small">(<a href="${esc(f.url)}" rel="noopener">${f.id}</a>, grade ${f.grade})</span>`).join('<br>') : '<span class="muted">None found for year-end run rate</span>'}</td></tr>`;
   }).join('');
   const takeaways = D.meta.companies.map(co => {
@@ -77,11 +79,11 @@ function overview() {
       <p class="note">The thin line follows the signals between reports, so the jump at each dot is that period's miss. Hover for detail.</p>
     </div>
     <h2>Outlook for ${target}</h2>
-    <p>Two cases you can check by hand: growth stops, or the lab keeps adding what it averaged per month in 2026.</p>
+    <p>Three cases you can check by hand: growth stops, the lab keeps adding what it averaged per month in 2026, or it keeps the pace between its last two reports.</p>
     <div class="card tablewrap"><table>
-      <thead><tr><th>Company</th><th class="num">If growth stops</th><th class="num">If the 2026 average continues</th><th class="num">Average added per month</th><th>Published expectation</th></tr></thead>
+      <thead><tr><th>Company</th><th class="num">If growth stops</th><th class="num">If the 2026 average continues</th><th class="num">If the recent pace continues</th><th>Published expectation</th></tr></thead>
       <tbody>${outlook}</tbody></table>
-      <p class="note">Arithmetic, not a forecast. Published expectations are shown for comparison and never used in the calculation.</p></div>`));
+      <p class="note">Arithmetic, not a forecast. The recent pace is a short window and swings with one report. Published expectations are shown for comparison and never used in the calculation.</p></div>`));
 
   lineChart(document.getElementById('c-anchors'), {
     height: 360, fmt: v => `$${v}B`, label: 'Annualized run rate: reported, signal-implied and outlook',
@@ -92,7 +94,8 @@ function overview() {
     ]),
     ranges: D.meta.companies.map((co, i) => {
       const o = M(co).outlook;
-      return { t: ms(o.target) - i * 5 * 864e5, lo: o.flat_b, hi: o.steady_b, mid: (o.flat_b + o.steady_b) / 2, color: COLOR[co], label: `${co} outlook, midpoint`, tip: `Growth stops: ${usd(o.flat_b, 0)}. 2026 average continues: ${usd(o.steady_b, 0)}.` };
+      return { t: ms(o.target) - i * 5 * 864e5, lo: o.flat_b, hi: Math.max(o.steady_b, o.recent_b), mid: o.steady_b, color: COLOR[co], label: `${co} outlook, 2026 average`,
+        tip: `Growth stops: ${usd(o.flat_b, 0)}. 2026 average continues: ${usd(o.steady_b, 0)}. Recent pace continues: ${usd(o.recent_b, 0)}.` };
     }),
   });
 }
@@ -253,10 +256,11 @@ function model() {
     <div class="grid2 wide" id="builders">${D.meta.companies.map(builder).join('')}</div>
 
     <h2>How accurate has it been?</h2>
-    <p>Each past report is predicted from the one before it, then compared with what was actually reported.</p>
+    <p>Each past report is predicted from the one before it, then compared with what was actually reported. The test is run in real time: the elasticity used for each report is fitted only on reports that came before it, so no prediction learns from the future.</p>
     <ul class="plain">
       <li><strong>Anthropic: ${pct(used(a).mape, 0)} typical miss</strong> over ${used(a).n} reports, against ${pct(by(a, 'Prior trend').mape, 0)} for a trend line and ${pct(by(a, 'Carry').mape, 0)} for assuming no change. Run rate has moved almost one for one with developer activity (elasticity ${a.elasticity.toFixed(2)}).</li>
       <li><strong>OpenAI: ${pct(used(o).mape, 0)} typical miss</strong> over ${used(o).n} reports, against ${pct(by(o, 'Signals, fitted').mape, 0)} when it is treated as one business. It is modelled in two pieces: business revenue (${pct(o.two_piece.business_share * 100, 0)} of the total) moves with developer signals including Codex, and consumer revenue is held at its last reported level. It still fell well short of the September report, when consumer revenue also jumped and no public signal showed it.</li>
+      <li><strong>Likely range.</strong> The low and high figures are the reference moved by the size of a typical past miss (±${pct(a.band.half_width_pct, 0)} for Anthropic, ±${pct(o.band.half_width_pct, 0)} for OpenAI). An earlier version used the spread between signals instead, which contained the reported figure only a third of the time. Checked by leaving each report out in turn, the new range held ${a.band.inside} of ${a.band.n} Anthropic reports${o.band.n ? ` and ${o.band.inside} of ${o.band.n} OpenAI reports` : ''}.</li>
     </ul>
     <div class="card tablewrap"><table>
       <thead><tr><th>Company</th><th>Report date</th><th class="num">Signals grew</th><th class="num">Reported grew</th><th class="num">Model said</th><th class="num">Reported</th><th class="num">Miss</th></tr></thead>
@@ -337,9 +341,10 @@ function about() {
       <li><strong>Register reports.</strong> One entry per disclosure with its exact wording, observation date, publication date and an evidence grade. Published forecasts are kept separately and never used to fit anything.</li>
       <li><strong>Collect signals.</strong> Raw responses are saved with URL, timestamp and hash, then reduced to the series under Signals.</li>
       <li><strong>Total.</strong> Latest report × (median signal growth since that report) ^ elasticity. Growth compares ${D.model.window_days}-day averages. Elasticity is fitted on Anthropic's consecutive reports. OpenAI has too few reports to fit its own, so its business piece borrows that elasticity and its consumer piece is held at the last reported level.</li>
+      <li><strong>Range.</strong> Low and high are the reference × e<sup>±r</sup>, where r is the root-mean-square log miss of the method over past reports: about a one-standard-error band. When the latest report is a "more than" figure, the low end never falls below it.</li>
       <li><strong>Split.</strong> Part 1 segments take the midpoint of bounds set by cited disclosures. Part 2 is the remainder.</li>
       <li><strong>Token economics.</strong> From Ramp's sample: spend divided by tokens gives the billed price per million tokens, by lab, token type and model. The quarterly price change is split exactly into repricing of the same models and shifts between models.</li>
-      <li><strong>Check.</strong> Every report is predicted from the previous one, out of sample, and all misses are published.</li>
+      <li><strong>Check.</strong> Every report is predicted from the previous one in real time, using only what came before it, and all misses are published.</li>
     </ul>
     <h2>Known limits</h2>
     <ul class="plain">

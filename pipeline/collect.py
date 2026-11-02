@@ -182,8 +182,9 @@ def tranco(end, out, carry):
 
 def ramp(start, end, out):
     import collect_ramp as cr
-    body = fetch('https://ramp.com/data/ai-index', out / 'raw' / 'ramp_index.html.gz').decode()
-    arrays = {k: cr.extract(body, k) for k in ['tokenPrices', 'tokenVolumes', 'adoptionVendor']}
+    body = fetch(cr.PAGE, out / 'raw' / 'ramp_index.html.gz').decode()
+    loaded = {k: cr.load(body, k, out / 'raw') for k in ['tokenPrices', 'tokenVolumes', 'adoptionVendor']}
+    arrays = {k: rows for k, (rows, _) in loaded.items()}
     labs = ['openai', 'anthropic']
     daily = [r for r in arrays['tokenPrices'] if str(start) <= r['usage_date'] <= str(end) and r['model_maker'] in labs]
     keys = [(r['usage_date'], r['model_maker'], r['token_type']) for r in daily]
@@ -193,7 +194,8 @@ def ramp(start, end, out):
     weekly = [r for r in arrays['tokenVolumes'] if str(start) <= r['period_start'] and r['period_end'] <= str(end) and r['model_maker'] in labs]
     cr.write(out / 'ramp_token_daily_7d.csv', daily); cr.write(out / 'ramp_adoption_monthly.csv', adoption); cr.write(out / 'ramp_token_weekly_models.csv', weekly)
     return {'latest_token_date': max(r['usage_date'] for r in daily), 'latest_adoption_month': max(r['date_month'] for r in adoption),
-            'latest_week_end': max(r['period_end'] for r in weekly), 'rows': len(daily) + len(adoption) + len(weekly)}
+            'latest_week_end': max(r['period_end'] for r in weekly), 'rows': len(daily) + len(adoption) + len(weekly),
+            'origin': {k: o for k, (_, o) in loaded.items()}}
 
 
 if __name__ == '__main__':
