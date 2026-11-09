@@ -87,3 +87,7 @@ date,domain,rank,quality_flag,list_id,list_rows,window_start,window_end,provider
 2026-10-26,openai.com,130,observed,GQ3QK,1000000,2026-09-27,2026-10-26,crux|farsight|majestic|radar|umbrella
 2026-10-26,claude.ai,411,observed,GQ3QK,1000000,2026-09-27,2026-10-26,crux|farsight|majestic|radar|umbrella
 2026-10-26,anthropic.com,372,observed,GQ3QK,1000000,2026-09-27,2026-10-26,crux|farsight|majestic|radar|umbrella
+2026-11-02,chatgpt.com,113,observed,GQ38K,1000000,2026-10-04,2026-11-02,crux|farsight|majestic|radar|umbrella
+2026-11-02,openai.com,130,observed,GQ38K,1000000,2026-10-04,2026-11-02,crux|farsight|majestic|radar|umbrella
+2026-11-02,claude.ai,416,observed,GQ38K,1000000,2026-10-04,2026-11-02,crux|farsight|majestic|radar|umbrella
+2026-11-02,anthropic.com,335,observed,GQ38K,1000000,2026-10-04,2026-11-02,crux|farsight|majestic|radar|umbrella

@@ -1,21 +1,21 @@
 {
-  "vintage": "2026-11-02",
+  "vintage": "2026-11-09",
   "requested": [
     "2025-12-01",
-    "2026-11-01"
+    "2026-11-08"
   ],
   "sources": {
     "npm": {
       "ok": true,
-      "result": 2016
+      "result": 2058
     },
     "pypi": {
       "ok": true,
-      "result": 416
+      "result": 430
     },
     "wikipedia": {
       "ok": true,
-      "result": 1005
+      "result": 1020
     },
     "snapshots": {
       "ok": true,
@@ -40,7 +40,7 @@
     },
     "tranco": {
       "ok": true,
-      "result": "2 new weekly lists added to vintage_2026-10-19"
+      "result": "1 new weekly lists added to vintage_2026-11-02"
     }
   }
 }

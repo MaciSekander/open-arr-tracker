@@ -1,0 +1,30 @@
+{
+  "url": "https://open-vsx.org/api/openai/chatgpt",
+  "retrieved_at_utc": "2026-11-09T09:11:21.404434+00:00",
+  "status": 200,
+  "headers": {
+    "Connection": "close",
+    "Content-Length": "11091",
+    "cache-control": "no-cache, public",
+    "x-ratelimit-limit": "10800",
+    "x-ratelimit-remaining": "10799",
+    "etag": "\"0ecd192a50c0c69ba58956d058cdaf855\"",
+    "content-type": "application/json",
+    "Accept-Ranges": "bytes",
+    "Via": "1.1 varnish, 1.1 varnish",
+    "Content-Security-Policy": "frame-ancestors 'none'",
+    "Date": "Mon, 09 Nov 2026 09:11:21 GMT",
+    "X-Served-By": "cache-fra-eddf8230160-FRA, cache-fra-eddf8230102-FRA, cache-chi-kmdw8640021-CHI",
+    "X-Cache": "MISS, MISS, MISS",
+    "X-Cache-Hits": "0, 0, 0",
+    "X-Timer": "S1794215481.243194,VS0,VE157",
+    "X-Frame-Options": "DENY",
+    "X-XSS-Protection": "1; mode=block",
+    "X-Content-Type-Options": "nosniff",
+    "Access-Control-Allow-Origin": "*",
+    "Vary": "Accept-Encoding",
+    "Strict-Transport-Security": "max-age=31557600"
+  },
+  "sha256_uncompressed_response": "3eca18f91d77f92db6ebfe034e588728bbb5399cfe02313bc322875e406c6509",
+  "bytes": 11091
+}

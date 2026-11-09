@@ -1,0 +1,25 @@
+{
+  "url": "https://api.npmjs.org/downloads/range/2025-12-01:2026-11-08/@anthropic-ai/sdk",
+  "retrieved_at_utc": "2026-11-09T09:10:58.041060+00:00",
+  "status": 200,
+  "headers": {
+    "Date": "Mon, 09 Nov 2026 09:10:58 GMT",
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": "14012",
+    "Connection": "close",
+    "CF-Ray": "a57baff3fa52a1c1-MSP",
+    "CF-Cache-Status": "MISS",
+    "Accept-Ranges": "bytes",
+    "Access-Control-Allow-Origin": "*",
+    "Cache-Control": "public, max-age=300",
+    "Expires": "Mon, 09 Nov 2026 09:15:58 GMT",
+    "Last-Modified": "Mon, 09 Nov 2026 09:10:58 GMT",
+    "Server": "cloudflare",
+    "access-control-allow-headers": "Authorization, Content-Type, If-None-Match",
+    "access-control-allow-methods": "GET, HEAD, POST, PUT, DELETE, OPTIONS",
+    "access-control-expose-headers": "WWW-Authenticate, Server-Authorization",
+    "request-id": "a57baff3fa52a1c1_c0f7"
+  },
+  "sha256_uncompressed_response": "a8bf4f1209d043b78fbf70e29e21d8596eb4d83f7d2cc5506e7d17ea5fcebcda",
+  "bytes": 14012
+}

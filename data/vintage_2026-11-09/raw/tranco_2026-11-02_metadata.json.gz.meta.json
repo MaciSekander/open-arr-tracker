@@ -1,0 +1,21 @@
+{
+  "url": "https://tranco-list.eu/api/lists/date/20261102",
+  "retrieved_at_utc": "2026-11-09T09:13:40.948550+00:00",
+  "status": 200,
+  "headers": {
+    "Date": "Mon, 09 Nov 2026 09:13:40 GMT",
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": "419",
+    "Connection": "close",
+    "Server": "cloudflare",
+    "Nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+    "X-Frame-Options": "DENY",
+    "cf-cache-status": "DYNAMIC",
+    "Server-Timing": "cfEdge;dur=502,cfOrigin;dur=540",
+    "Report-To": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=et0siEz0T7k4t3w%2Fqs184kTeul9%2FuRqe3bttpVqiF3iIhKL3MWkr5z%2BSujBDcj%2BneGrnt6mQ9acblMuzwi%2FkyLePvG6yW5c0KGsMeKIQRxHCNAwFlY5ffLe8g%2FHdJ63Aow%3D%3D\"}]}",
+    "CF-RAY": "a57bb3e85a8c9181-MSP",
+    "alt-svc": "h3=\":443\"; ma=86400"
+  },
+  "sha256_uncompressed_response": "dba3428424e80bbe8b9dbd2b03e436cca58ed564b2b49880ee9202353e1702c2",
+  "bytes": 419
+}

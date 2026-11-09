@@ -1,0 +1,25 @@
+{
+  "url": "https://api.npmjs.org/downloads/range/2025-12-01:2026-11-08/@anthropic-ai/claude-code",
+  "retrieved_at_utc": "2026-11-09T09:10:58.758844+00:00",
+  "status": 200,
+  "headers": {
+    "Date": "Mon, 09 Nov 2026 09:10:58 GMT",
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": "14004",
+    "Connection": "close",
+    "CF-Ray": "a57baff85a58ae26-MSP",
+    "CF-Cache-Status": "MISS",
+    "Accept-Ranges": "bytes",
+    "Access-Control-Allow-Origin": "*",
+    "Cache-Control": "public, max-age=300",
+    "Expires": "Mon, 09 Nov 2026 09:15:58 GMT",
+    "Last-Modified": "Mon, 09 Nov 2026 09:10:58 GMT",
+    "Server": "cloudflare",
+    "access-control-allow-headers": "Authorization, Content-Type, If-None-Match",
+    "access-control-allow-methods": "GET, HEAD, POST, PUT, DELETE, OPTIONS",
+    "access-control-expose-headers": "WWW-Authenticate, Server-Authorization",
+    "request-id": "a57baff85a58ae26_3372"
+  },
+  "sha256_uncompressed_response": "cf29340ad341c2de85a7a47837c667375d78a69f4aca91705752c85f4e6d474e",
+  "bytes": 14004
+}
